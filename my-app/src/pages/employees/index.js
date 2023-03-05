@@ -1,0 +1,11 @@
+import "./employee.css";
+
+function Employee (props){
+    return (
+        <div>
+            <h1>Employee</h1>
+        </div>
+    )
+}
+
+export default Employee;
