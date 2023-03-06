@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Admin from "../../pages/admin";
-import Dashboard from "../../pages/dashboard";
-import Employee from "../../pages/employees";
-import Login from "../../pages/login";
-import Teams from "../../pages/teams&projects";
-import NewAdmin from "../../pages/admin/create-admin";
+import Dashboard from "../../pages/dashboard/dashboard.js";
+import Employee from "../../pages/employees/employee.js";
+import Login from "../../pages/login/login.js";
+import Teams from "../../pages/teams&projects/teams-projects.js";
+import NewAdmin from "../../pages/admin/create-admin.js";
 
 function AllRoutes (){
     return(
