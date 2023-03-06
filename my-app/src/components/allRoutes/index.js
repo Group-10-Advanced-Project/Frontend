@@ -4,6 +4,7 @@ import Dashboard from "../../pages/dashboard";
 import Employee from "../../pages/employees";
 import Login from "../../pages/login";
 import Teams from "../../pages/teams&projects";
+import NewAdmin from "../../pages/admin/create-admin";
 
 function AllRoutes (){
     return(
@@ -14,6 +15,7 @@ function AllRoutes (){
                 <Route path="/employee" element={<Employee/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/team&projects" element={<Teams/>}/>
+                <Route path="/newAdmin" element={<NewAdmin/>}/>
              </Routes> 
         </div>
     )
