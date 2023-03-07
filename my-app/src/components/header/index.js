@@ -1,11 +1,11 @@
-import "./nav.css";
+import "./header.css";
 
-function Nav (props){
+function Header (props){
     return(
         <div>
-            <h1>Nav</h1>
+            <h1>Header</h1>
         </div>
     )
 }
 
-export default Nav;
+export default Header;
