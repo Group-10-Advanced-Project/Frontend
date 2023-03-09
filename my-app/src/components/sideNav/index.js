@@ -8,12 +8,11 @@ import { MdOutlineClass } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 import { BsPersonVcard } from "react-icons/bs";
 import { RiTeamLine } from "react-icons/ri";
-import { FaUserCheck, FaUserTie } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 
 import logo from "../../erp.png";
-function sideNav(props) {
+function SideNav(props) {
   if (useLocation().pathname == "/login") return null;
   return (
     <>
@@ -74,4 +73,4 @@ function sideNav(props) {
   );
 }
 
-export default sideNav;
+export default SideNav;

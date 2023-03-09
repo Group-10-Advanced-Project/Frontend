@@ -1,7 +1,8 @@
 nav {
+    max-width: 240px;
     width: 240px;
     height: 100vh;
-    background-color: #5541D7;
+    background-color: #5cbdcb;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,7 +67,7 @@ nav span {
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
     width: 111%;
-    color: #422cd0;
+    color: #45b4c4;
     position: relative;
     display: flex;
     justify-content: flex-start;
@@ -98,7 +99,7 @@ nav .active b::before {
     left: -16px;
     width: 100%;
     height: 100%;
-    background-color: #5541D7;
+    background-color: #5cbdcb;
     border-bottom-right-radius: 20px;
 }
 
@@ -109,7 +110,7 @@ nav .active u::before {
     left: -16px;
     width: 100%;
     height: 100%;
-    background-color: #5541D7;
+    background-color: #5cbdcb;
     border-top-right-radius: 20px;
 }
 
