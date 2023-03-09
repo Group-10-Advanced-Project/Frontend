@@ -1,7 +1,9 @@
 import "./sideNav.css";
 
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+
 import { MdOutlineClass } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 import { BsPersonVcard } from "react-icons/bs";
@@ -11,8 +13,8 @@ import { TbReportSearch } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 
 import logo from "../../erp.png";
-
 function sideNav(props) {
+  if (useLocation().pathname == "/login") return null;
   return (
     <>
       <nav>
