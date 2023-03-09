@@ -1,6 +1,7 @@
 import "./header.css";
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -8,6 +9,9 @@ const Header = () => {
     e.preventDefault();
     setSearchInput(e.target.value);
   };
+  if (useLocation().pathname == "/login") {
+    return null;
+  }
   return (
     <div className="header">
       <form className="search-form">
@@ -23,12 +27,9 @@ const Header = () => {
           <button className="search-btn" type="submit">
             <AiOutlineSearch />
           </button>
-          {/* <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          ></link> */}
         </fieldset>
       </form>
+      <p className="admin-name">Admin</p>
     </div>
   );
 };
