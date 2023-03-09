@@ -29,19 +29,19 @@ function sideNav(props) {
             <u></u>
             <span>Dashboard</span>
           </NavLink>
-          <NavLink to={"/classroom"}>
+          <NavLink to={"/admin"}>
             <MdOutlineClass className={"icons"} size={25} />
             <b></b>
             <u></u>
             <span>Admin</span>
           </NavLink>
-          <NavLink to={"/sections"}>
+          <NavLink to={"/employee"}>
             <BsPersonVcard className={"icons"} size={25} />
             <b></b>
             <u></u>
             <span>Employees</span>
           </NavLink>
-          <NavLink to={"/student"}>
+          <NavLink to={"/team&projects"}>
             <RiTeamLine className={"icons"} size={25} />
             <b></b>
             <u></u>
