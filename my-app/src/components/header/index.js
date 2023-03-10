@@ -11,7 +11,7 @@ const Header = () => {
   };
   if (useLocation().pathname == "/login") {
     return null;
-  }
+  }1
   return (
     <div className="header">
       <form className="search-form">
