@@ -12,6 +12,7 @@ nav {
 }
 
 nav a {
+    box-sizing: content-box;
     text-decoration: none;
     color: white;
     height: 40px;
