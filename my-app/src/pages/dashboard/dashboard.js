@@ -4,7 +4,7 @@ function Dashboard (props) {
     return (
         <div>
             <h1>
-                Dashboard
+       Dashboard
             </h1>
         </div>
     );
