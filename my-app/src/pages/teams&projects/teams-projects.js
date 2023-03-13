@@ -1,4 +1,5 @@
 import "./teams&projects.css";
+import React from "react";
 import Header from "../../components/header";
 
 function Teams (props){
