@@ -1,4 +1,5 @@
 import "./admin.css";
+import Header from "../../components/header";
 
 function Admin (props){
     return(
@@ -6,6 +7,7 @@ function Admin (props){
             <h1>
                 Admin
             </h1>
+            <Header dataType="admins" />
         </div>
     );
 }

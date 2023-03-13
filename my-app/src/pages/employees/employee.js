@@ -1,9 +1,11 @@
 import "./employee.css";
+import Header from "../../components/header";
 
 function Employee (props){
     return (
         <div>
             <h1>Employee</h1>
+            <Header dataType="employees" />
         </div>
     )
 }
