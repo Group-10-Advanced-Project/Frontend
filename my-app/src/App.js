@@ -32,7 +32,7 @@ function App() {
                 <Route path="team&projects" element={<Teams/>}/>
              
               </Route>
-              <Route element={<RequireAuth  allowedRoles={[ROLES.SuperAdmin]}/>} >
+              <Route element={<RequireAuth />} >
               <Route path="newAdmin" element={<NewAdmin/>}/>
               </Route>
 
