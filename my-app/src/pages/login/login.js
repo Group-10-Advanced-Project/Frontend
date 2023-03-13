@@ -29,8 +29,7 @@ function Login() {
         withCredentials:true
       }
       );
-
-      console.log(JSON.stringify(response))
+      console.log(JSON.stringify(response)) 
       console.log(JSON.stringify(response.data.access_token))
 
       const superadmin =response.data.user.is_super_admin;
