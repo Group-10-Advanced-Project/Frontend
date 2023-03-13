@@ -117,7 +117,7 @@ nav .active u::before {
 
 @media screen and (max-width: 768px) {
     nav {
-        width: 70px;
+        max-width: 70px;
         overflow-x: hidden;
     }
 

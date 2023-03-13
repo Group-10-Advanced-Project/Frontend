@@ -17,7 +17,6 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <SideNav />
-        <AdminPopup />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/admin" element={<Admin />} />
