@@ -1,32 +1,53 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './login.css'
+import useAuth from '../../hooks/useAuth';
 import { AiOutlineMail,AiFillLock } from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from '../../api/axios';
+import {Link, useNavigate ,useLocation} from 'react-router-dom';
+const LOGIN_URL ='/api/auth/login';
 
 function Login() {
+  const {setAuth}=useAuth(); //globalAuth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location =useLocation(); 
+  const from = location.state?.from?.pathname || "/dashboard";
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => { 
     event.preventDefault();
-    setLoading(true);
+    setLoading(true);  
 
     try { 
-      const response = await axios.post('http://localhost:8000/api/auth/login', {
+      const response = await axios.post(LOGIN_URL, {
         email,
         password, 
-      });
- 
-      localStorage.setItem('token', response.data.access_token);
-      toast.success("Login successful!");
-      window.location.href = '/';
-    } catch (error) {
+        headers:{'content-type':'application/json'}, 
+        withCredentials:true
+      }
+      );
+      console.log(JSON.stringify(response)) 
+      console.log(JSON.stringify(response.data.access_token))
+
+      const superadmin =response.data.user.is_super_admin;
+      console.log(superadmin)
+    const access_token=response?.data?.access_token;
+    
+    setAuth({ email, password,superadmin, access_token });
+    localStorage.setItem('token', 'true');
+      toast.success("Login successful!"); 
+       //window.location.href = '/';
+       navigate(from, { replace: true });
+          } catch (error) {
+      if(!error.response){
+        toast.error("No Internet Connection!");}
+        else{
       console.error(error);
       toast.error("Email/Password invalid!");
-    }
+    }}
 
     setLoading(false);
   };
