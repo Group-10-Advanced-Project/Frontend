@@ -1,4 +1,4 @@
-import "./teams&projects.css";
+import "./teams.css";
 import React from "react";
 
 function Teams(props) {

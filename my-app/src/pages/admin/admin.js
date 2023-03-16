@@ -82,7 +82,7 @@ function Admin(props) {
       .get("http://127.0.0.1:8000/api/admin", {
         // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg5NjExNDEsImV4cCI6MTY3ODk2NDc0MSwibmJmIjoxNjc4OTYxMTQxLCJqdGkiOiJXRDd6akt6NE9TYWJhandFIiwic3ViIjoiMSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.jg94HDyCnFMTp0r6eLyjMR9xvCioMpjm5lE-HkxITR4`,
           Accept: "application/json",
         },
       })
