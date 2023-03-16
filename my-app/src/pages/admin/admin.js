@@ -7,6 +7,7 @@ import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
+import Cookies from "js-cookie";
 
 function createData(
   id,
@@ -60,16 +61,16 @@ function Admin(props) {
   }, 500);
 
   const handleDelete = (rowsDeleted) => {
+    const token = Cookies.get("token");
     axios
-      .delete(`http://127.0.0.1:8000/api/admin/${rowsDeleted}`, {
+      .delete(`http://127.0.0.1:8000/api/auth/admin/${rowsDeleted}`, {
         // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
-        console.log(response);
         getData();
       })
       .catch((error) => {
@@ -77,46 +78,48 @@ function Admin(props) {
       });
   };
 
-  const getData = () =>
+  const getData = () => {
+    const token = Cookies.get("token");
     axios
       .get("http://127.0.0.1:8000/api/admin", {
         // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
         setData(response.data.message);
         setLoading(false);
-        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
       });
+  };
 
   const handleUpdate = (rowData) => {
     setEditingRow(true);
-    console.log("console[rowdata]", rowData);
+    const token = Cookies.get("token");
     axios
       .patch(
-        `http://127.0.0.1:8000/api/admin/${rowData[0]}`,
+        `http://127.0.0.1:8000/api/auth/admin/${rowData[0]}`,
         {
-          name: rowData[1],
-          is_active: rowData[2],
+          first_name: rowData[1],
+          last_name: rowData[2],
+          email: rowData[3],
+          is_super_admin: rowData[4],
         },
         {
           // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
       )
       .then((response) => {
         getData();
-        console.log(rowData);
       })
       .catch((error) => {
         console.log(error);
@@ -148,7 +151,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -176,7 +181,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -204,7 +211,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -232,7 +241,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
