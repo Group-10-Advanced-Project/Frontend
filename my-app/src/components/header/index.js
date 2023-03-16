@@ -35,7 +35,6 @@ const Header = () => {
           </button>
         </fieldset>
       </form>
-      <p className="admin-name">Admin</p>
     </div>
   );
 };
