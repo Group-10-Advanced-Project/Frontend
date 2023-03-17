@@ -1,17 +1,27 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import { AiOutlineClose } from "react-icons/ai";
+import React from "react";
+import { ToastContainer } from "react-toastify";
+import "./confirmationPopup.css";
 
 export default function ConfirmationPopup(props) {
   function closePopup() {
     document.querySelector("#modal").close();
   }
-
+  console.log(props);
   return (
     <dialog className="confirmation-popup" id="modal">
-      <AiOutlineClose onClick={closePopup} className="close-x"></AiOutlineClose>
-      <div></div>
+      <p>Are you sure you want to delete admin with id {props.id}</p>
+      <div>
+        <button
+          id="confirmation-delete-btn"
+          onClick={() => {
+            props.handleDelete(props.id);
+            closePopup();
+          }}
+        >
+          Delete
+        </button>
+        <button onClick={closePopup}>Cancel</button>
+      </div>
       <ToastContainer />
     </dialog>
   );

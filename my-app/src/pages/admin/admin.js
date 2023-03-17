@@ -7,6 +7,7 @@ import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
+import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
 
 function createData(
@@ -33,6 +34,7 @@ function Admin(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -64,7 +66,6 @@ function Admin(props) {
     const token = Cookies.get("token");
     axios
       .delete(`http://127.0.0.1:8000/api/auth/admin/${rowsDeleted}`, {
-        // token issue should be fixed after discussing others work
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -82,7 +83,6 @@ function Admin(props) {
     const token = Cookies.get("token");
     axios
       .get("http://127.0.0.1:8000/api/admin", {
-        // token issue should be fixed after discussing others work
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -111,7 +111,6 @@ function Admin(props) {
           is_super_admin: rowData[4],
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -125,7 +124,9 @@ function Admin(props) {
         console.log(error);
       });
   };
-
+  const showConfirmationBox = () => {
+    document.querySelector(".confirmation-popup").showModal();
+  };
   const columns = [
     {
       name: "id",
@@ -273,14 +274,19 @@ function Admin(props) {
             <>
               <button
                 className="edit-btn"
-                onClick={() => handleUpdate(rowData)}
+                onClick={() => {
+                  handleUpdate(rowData);
+                }}
               >
                 <MdOutlineEdit />
               </button>
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               <button
                 className="delete-btn"
-                onClick={() => handleDelete(rowData[0])}
+                onClick={() => {
+                  setDeleteId(rowData[0]);
+                  showConfirmationBox();
+                }}
               >
                 <MdDeleteForever />
               </button>
@@ -335,6 +341,7 @@ function Admin(props) {
               textAlign: "center",
             }}
           />
+          <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
           <AdminPopup />
         </Box>
       )}
