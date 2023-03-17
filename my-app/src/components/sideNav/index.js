@@ -8,6 +8,7 @@ import { MdOutlineClass } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 import { BsPersonVcard } from "react-icons/bs";
 import { RiTeamLine } from "react-icons/ri";
+import { GoProject } from "react-icons/go";
 import { TbReportSearch } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 
@@ -40,11 +41,17 @@ function SideNav(props) {
             <u></u>
             <span>Employees</span>
           </NavLink>
-          <NavLink to={"/team&projects"}>
+          <NavLink to={"/team"}>
             <RiTeamLine className={"icons"} size={25} />
             <b></b>
             <u></u>
-            <span>Team&Projects</span>
+            <span>Teams</span>
+          </NavLink>
+          <NavLink to={"/project"}>
+            <GoProject className={"icons"} size={25} />
+            <b></b>
+            <u></u>
+            <span>Projects</span>
           </NavLink>
           <NavLink to={"/kpi"}>
             <MdOutlineClass className={"icons"} size={25} />

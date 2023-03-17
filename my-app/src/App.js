@@ -1,11 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Admin from "./pages/admin/admin.js";
 import Dashboard from "./pages/dashboard/dashboard.js";
 import Employee from "./pages/employees/employee.js";
 import Login from "./pages/login/login.js";
-import Teams from "./pages/teams&projects/teams-projects.js";
+import Teams from "./pages/teams/teams.js";
+import Projects from "./pages/projects/projects.js";
 import NewAdmin from "./pages/admin/create-admin.js";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth.js";
@@ -29,7 +29,8 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="admin" element={<Admin />} />
         <Route path="employee" element={<Employee />} />
-        <Route path="team&projects" element={<Teams />} />
+        <Route path="team" element={<Teams />} />
+        <Route path="project" element={<Projects />} />
       </Route>
       <Route element={<RequireAuth />}>
         <Route path="newAdmin" element={<NewAdmin />} />
