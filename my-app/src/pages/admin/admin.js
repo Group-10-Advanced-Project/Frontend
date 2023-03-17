@@ -7,6 +7,8 @@ import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
+import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
+import Cookies from "js-cookie";
 
 function createData(
   id,
@@ -32,15 +34,18 @@ function Admin(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const adminSuper = Cookies.get("super-admin");
 
   useEffect(() => {
     setLoading(true);
     getData();
   }, []);
 
-  function openPopup() {
-    document.querySelector("#modal").showModal();
+  function openAdminPopup() {
+    document.querySelector(".admin-popup").showModal();
   }
+
   const rows =
     Data ||
     [].map((item) =>
@@ -60,16 +65,15 @@ function Admin(props) {
   }, 500);
 
   const handleDelete = (rowsDeleted) => {
+    const token = Cookies.get("token");
     axios
-      .delete(`http://127.0.0.1:8000/api/admin/${rowsDeleted}`, {
-        // token issue should be fixed after discussing others work
+      .delete(`http://127.0.0.1:8000/api/auth/admin/${rowsDeleted}`, {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
-        console.log(response);
         getData();
       })
       .catch((error) => {
@@ -77,52 +81,54 @@ function Admin(props) {
       });
   };
 
-  const getData = () =>
+  const getData = () => {
+    const token = Cookies.get("token");
     axios
       .get("http://127.0.0.1:8000/api/admin", {
-        // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg5NjExNDEsImV4cCI6MTY3ODk2NDc0MSwibmJmIjoxNjc4OTYxMTQxLCJqdGkiOiJXRDd6akt6NE9TYWJhandFIiwic3ViIjoiMSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.jg94HDyCnFMTp0r6eLyjMR9xvCioMpjm5lE-HkxITR4`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
         setData(response.data.message);
         setLoading(false);
-        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
       });
+  };
 
   const handleUpdate = (rowData) => {
     setEditingRow(true);
-    console.log("console[rowdata]", rowData);
+    const token = Cookies.get("token");
     axios
       .patch(
-        `http://127.0.0.1:8000/api/admin/${rowData[0]}`,
+        `http://127.0.0.1:8000/api/auth/admin/${rowData[0]}`,
         {
-          name: rowData[1],
-          is_active: rowData[2],
+          first_name: rowData[1],
+          last_name: rowData[2],
+          email: rowData[3],
+          is_super_admin: rowData[4],
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
       )
       .then((response) => {
         getData();
-        console.log(rowData);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
+  const showConfirmationBox = () => {
+    document.querySelector(".confirmation-popup").showModal();
+  };
   const columns = [
     {
       name: "id",
@@ -148,7 +154,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -176,7 +184,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -204,7 +214,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -232,7 +244,9 @@ function Admin(props) {
                 <input
                   className="EditInput"
                   value={value}
-                  onChange={(e) => updateValue(e.target.value)}
+                  onChange={(e) => {
+                    updateValue(e.target.value);
+                  }}
                 />
               ) : (
                 value
@@ -262,14 +276,19 @@ function Admin(props) {
             <>
               <button
                 className="edit-btn"
-                onClick={() => handleUpdate(rowData)}
+                onClick={() => {
+                  handleUpdate(rowData);
+                }}
               >
                 <MdOutlineEdit />
               </button>
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               <button
                 className="delete-btn"
-                onClick={() => handleDelete(rowData[0])}
+                onClick={() => {
+                  setDeleteId(rowData[0]);
+                  showConfirmationBox();
+                }}
               >
                 <MdDeleteForever />
               </button>
@@ -310,22 +329,29 @@ function Admin(props) {
           <Loader />
         </div>
       ) : (
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-            title={"Admins"}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
-          <AdminPopup />
-        </Box>
+        <div>
+          {console.log(adminSuper)}
+          {parseInt(adminSuper) ? (
+            <button onClick={openAdminPopup}>Add Admin +</button>
+          ) : null}
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={"Admins"}
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
+            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+            <AdminPopup />
+          </Box>
+        </div>
       )}
     </>
   );

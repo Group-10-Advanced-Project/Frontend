@@ -1,5 +1,4 @@
-.admin-popup, 
-.employee-popup {
+#modal {
     width: 500px;
     max-width: 80%;
     border-radius: 10px;
@@ -7,8 +6,7 @@
     transition: 200ms ease-in-out;
 }
 
-.admin-popup .close-x, 
-.employee-popup .close-x {
+#modal .close-x {
     height: 25px;
     width: 25px;
     margin-left: auto;
@@ -20,24 +18,20 @@
     transition: .25s all ease-in-out;
 }
 
-.admin-popup .close-x:hover,
-.employee-popup .close-x:hover {
+#modal .close-x:hover {
     background: rgba(0, 0, 0, 0.07);
     cursor: pointer;
 }
 
-.admin-popup, .admin-popup fieldset,
-.employee-popup, .employee-popup fieldset {
+#modal, #modal fieldset {
     border: 0;
 }
 
-.admin-popup fieldset,
-.employee-popup fieldset {
+#modal fieldset {
     position: relative;
 }
 
-.admin-popup input,
-.employee-popup input {
+#modal input {
     height: 50px;
     width: 100%;
     padding: 6px 24px 6px 6px;
@@ -49,8 +43,7 @@
     transition: all .5s ease;
 }
 
-.admin-popup label,
-.employee-popup label {
+#modal label {
     padding: 0 4px;
     position: absolute;
     top: -2px;
@@ -61,8 +54,7 @@
     font-weight: bold;
 }
 
-.admin-popup button,
-.employee-popup button {
+#modal button {
     margin-bottom: 12px;
     padding: 12px 16px;
     border: none;
@@ -79,3 +71,8 @@
     text-transform: uppercase;
     transition: all .5s ease;
 }
+
+#modal button:hover {
+    background: #40b2c2;
+}
+
