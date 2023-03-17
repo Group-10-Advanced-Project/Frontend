@@ -35,15 +35,17 @@ function Admin(props) {
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const adminSuper = Cookies.get("super-admin");
 
   useEffect(() => {
     setLoading(true);
     getData();
   }, []);
 
-  function openPopup() {
-    document.querySelector("#modal").showModal();
+  function openAdminPopup() {
+    document.querySelector(".admin-popup").showModal();
   }
+
   const rows =
     Data ||
     [].map((item) =>
@@ -327,23 +329,29 @@ function Admin(props) {
           <Loader />
         </div>
       ) : (
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-            title={"Admins"}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
-          <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-          <AdminPopup />
-        </Box>
+        <div>
+          {console.log(adminSuper)}
+          {parseInt(adminSuper) ? (
+            <button onClick={openAdminPopup}>Add Admin +</button>
+          ) : null}
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={"Admins"}
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
+            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+            <AdminPopup />
+          </Box>
+        </div>
       )}
     </>
   );
