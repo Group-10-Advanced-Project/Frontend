@@ -16,6 +16,7 @@ body {
 #root > div {
   overflow-x: hidden;
   overflow-y: scroll;
+  flex-grow: 1;
 }
 
 .App {
