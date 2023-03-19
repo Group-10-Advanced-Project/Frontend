@@ -7,6 +7,8 @@ import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
+import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
+import Cookies from "js-cookie";
 
 // The purpose of this function is to create an object representing a row of data for display in a table or list. Each parameter corresponds to a column of data, and the function returns an object with properties representing each column. The resulting object can be used to populate a table or list of data.
 function createData(
@@ -48,6 +50,8 @@ function Project(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const adminSuper = Cookies.get("super-admin");
 
   // The useEffect hook is used to execute the getData function and update the state variables when the component mounts. The [] as a second argument to useEffect is used to ensure that the effect is only executed once when the component mounts.
   useEffect(() => {
@@ -58,8 +62,8 @@ function Project(props) {
 
   console.log("Loading:", Loading);
 
-  function openPopup() {
-    document.querySelector("#modal").showModal();
+  function openProjectPopup() {
+    document.querySelector(".project-popup").showModal();
   }
   // This code creates an array of rows that will be used as data for the MUIDataTable component.
   //If the Data state variable is not null or undefined, it will be used to create the rows using the createData function. Otherwise, an empty array will be created using the map method.
@@ -72,7 +76,7 @@ function Project(props) {
         item.about,
         item.status,
         item.team_id,
-        item.employees,
+        // item.employees,
         item.created_at,
         item.updated_at
       )
@@ -88,9 +92,8 @@ function Project(props) {
   const handleDelete = (rowsDeleted) => {
     axios
       .delete(`http://127.0.0.1:8000/api/project/${rowsDeleted}`, {
-        // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
@@ -105,12 +108,12 @@ function Project(props) {
 
   //The getData function retrieves project data from a server using an HTTP GET request with the axios library. It sets the Loading state variable to true initially, sends an authorization token along with the request headers, and then updates the Data state variable with the response data from the server.
   // If the request is successful, the setData function is called to set the data in the state and setLoading is called with false to indicate that the data has been loaded. If the request fails, setLoading is called with false to indicate that the data failed to load.
-  const getData = () =>
+  const getData = () => {
+    const token = Cookies.get("token");
     axios
       .get("http://127.0.0.1:8000/api/project", {
-        // token issue should be fixed after discussing others work
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg5NjExNDEsImV4cCI6MTY3ODk2NDc0MSwibmJmIjoxNjc4OTYxMTQxLCJqdGkiOiJXRDd6akt6NE9TYWJhandFIiwic3ViIjoiMSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.jg94HDyCnFMTp0r6eLyjMR9xvCioMpjm5lE-HkxITR4`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
@@ -127,18 +130,20 @@ function Project(props) {
   // This code is a function called handleUpdate that takes in a rowData parameter. It sets the state variable editingRow to true, then makes an HTTP PATCH request to update a row in a database. The request URL is constructed using the rowData[0] value as the ID of the row to update. The request body includes the name and is_active fields from the rowData array. The request includes an authorization header containing a bearer token. If the request is successful, the getData function is called to update the table with the new data, and the rowData array is logged to the console. If the request fails, the error is logged to the console.
   const handleUpdate = (rowData) => {
     setEditingRow(true);
+    const token = Cookies.get("token");
     console.log("console[rowdata]", rowData);
     axios
       .patch(
         `http://127.0.0.1:8000/api/project/${rowData[0]}`,
         {
           name: rowData[1],
-          is_active: rowData[2],
+          about: rowData[2],
+          status: rowData[3],
+          team_id: rowData[4]
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjc4ODI2MjIxLCJleHAiOjE2Nzg4Mjk4MjEsIm5iZiI6MTY3ODgyNjIyMSwianRpIjoibWhXY01xTmZoYkEwanE5diIsInN1YiI6IjUiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5In0.uPK7uZAQygulnDqtYqfnJTGLc8uMrkCQu7qs0tIAglE`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
@@ -347,6 +352,11 @@ function Project(props) {
           <Loader />
         </div>
       ) : (
+        <div>
+          {console.log(adminSuper)}
+          {parseInt(adminSuper) ? (
+            <button onClick={openProjectPopup}>Add Project +</button>
+          ) : null}
         <Box sx={{ maxWidth: "75%", margin: "auto" }}>
           <MUIDataTable
             title={"Projects"}
@@ -361,11 +371,14 @@ function Project(props) {
               textAlign: "center",
             }}
           />
+          <ConfirmationPopup handleDelete={handleDelete} id={deleted} />
           <ProjectPopup />
         </Box>
+        </div>
       )}
     </>
   );
+}
 }
 
 export default Project;

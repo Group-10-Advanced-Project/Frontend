@@ -3,6 +3,7 @@ import "./projectPopup.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 export default function ProjectPopup() {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ export default function ProjectPopup() {
 
   const addProject = async (e) => {
     e.preventDefault();
+    const token = Cookies.get("token");
 
     try {
       const response = await axios.post(
@@ -23,9 +25,8 @@ export default function ProjectPopup() {
           team_id,
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg2NTAzNTIsImV4cCI6MTY3ODY1Mzk1MiwibmJmIjoxNjc4NjUwMzUyLCJqdGkiOiJhNDhMSGlIbE1qR2hOUDMxIiwic3ViIjoiNSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.9vHnV3_QbQmGKMbn5XJcWjiEpeSh6fBirrdIzaNWDnc`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
@@ -39,7 +40,7 @@ export default function ProjectPopup() {
   };
 
   function closePopup() {
-    document.querySelector("#modal").close();
+    document.querySelector(".project-popup").close();
   }
 
   return (
@@ -47,7 +48,7 @@ export default function ProjectPopup() {
       <AiOutlineClose onClick={closePopup} className="close-x"></AiOutlineClose>
       <form action="POSTToastContainer" method="dialog">
         <fieldset>
-          <label>Name</label>
+          <label>Project Name</label>
           <input
             type="text"
             required
@@ -71,6 +72,7 @@ export default function ProjectPopup() {
           />
         </fieldset>
         <fieldset>
+          {/* Not sure if team_id is a fillable or not  */}
           <label>team_id</label>
           <input
             type="team_id"
@@ -78,6 +80,7 @@ export default function ProjectPopup() {
             onChange={(e) => setTeam_id(e.target.value)}
           />
         </fieldset>
+        {/* what's the importance of this fieldset element */}
         <fieldset></fieldset>
         <fieldset>
           <button onClick={addProject}>Submit</button>
