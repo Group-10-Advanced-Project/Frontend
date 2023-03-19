@@ -9,6 +9,7 @@ import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
 import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
+import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
 
 function createData(
   id,
@@ -35,6 +36,7 @@ function Admin(props) {
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const adminSuper = Cookies.get("super-admin");
 
   useEffect(() => {
@@ -274,14 +276,28 @@ function Admin(props) {
           const id = rowData[0];
           return (
             <>
-              <button
-                className="edit-btn"
-                onClick={() => {
-                  handleUpdate(rowData);
-                }}
-              >
-                <MdOutlineEdit />
-              </button>
+              {isEditing && editingRow === tableMeta.rowIndex ? (
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditingRow(null);
+                    handleUpdate(rowData);
+                  }}
+                >
+                  <AiOutlineSave />
+                </button>
+              ) : (
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
+                  }}
+                >
+                  <MdOutlineEdit />
+                </button>
+              )}
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               <button
                 className="delete-btn"
@@ -330,13 +346,20 @@ function Admin(props) {
         </div>
       ) : (
         <div>
-          {console.log(adminSuper)}
-          {parseInt(adminSuper) ? (
-            <button onClick={openAdminPopup}>Add Admin +</button>
-          ) : null}
           <Box sx={{ maxWidth: "75%", margin: "auto" }}>
             <MUIDataTable
-              title={"Admins"}
+              title={
+                parseInt(adminSuper) ? (
+                  <div>
+                    <button onClick={openAdminPopup}>
+                      <AiOutlinePlus />
+                    </button>
+                    <span className="kpititle">Admins</span>
+                  </div>
+                ) : (
+                  "Admins"
+                )
+              }
               data={rows}
               columns={columns}
               options={options}
