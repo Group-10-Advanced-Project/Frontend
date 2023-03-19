@@ -1,6 +1,8 @@
 import "./Kpi.css";
 import React, { useState, useEffect } from "react";
-import AdminPopup from "../../components/addAdminPopup/adminPopup";
+import KpiPopup from "../../components/addKpiPopup/kpiPopup.js";
+import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
+import showEditBox from "../../components/EditConformation/EditConformation.js"
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
 import debounce from "lodash/debounce";
@@ -8,6 +10,8 @@ import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
+import { AiOutlineSave ,AiOutlinePlus} from "react-icons/ai";
+
 
 function createData(
   id,
@@ -29,14 +33,17 @@ function Kpi(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
 
   useEffect(() => {
     setLoading(true);
     getData();
   }, []);
 
-  function openPopup() {
-    document.querySelector("#modal").showModal();
+  function openKpiPopup() {
+    document.querySelector(".kpi-popup").showModal();
   }
   const rows =
     Data ||
@@ -58,7 +65,6 @@ function Kpi(props) {
     const token = Cookies.get("token");
     axios
       .delete(`http://127.0.0.1:8000/api/deletekpi/${rowsDeleted}`, {
-        // token issue should be fixed after discussing others work
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -75,7 +81,6 @@ function Kpi(props) {
   const getData = () => {
     const token = Cookies.get("token");
     axios.get("http://127.0.0.1:8000/api/getAllkpi", {
-        //token issue should be fixed after discussing others work
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -97,14 +102,13 @@ function Kpi(props) {
     const token = Cookies.get("token");
     axios
       .patch(
-        `http://127.0.0.1:8000/api/auth/editKpi/${rowData[0]}`,
+        `http://127.0.0.1:8000/api/editKpi/${rowData[0]}`,
         {
           name: rowData[1],
           about: rowData[2],
           
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -118,7 +122,14 @@ function Kpi(props) {
         console.log(error);
       });
   };
+  const showConfirmationBox = () => {
+    document.querySelector(".confirmation-popup").showModal();
+  };
 
+  const showEditBox = () => {
+    document.querySelector(".edit-popup").showModal();
+  };
+  
   const columns = [
     {
       name: "id",
@@ -206,16 +217,40 @@ function Kpi(props) {
           const id = rowData[0];
           return (
             <>
-              <button
-                className="edit-btn"
-                onClick={() => handleUpdate(rowData)}
-              >
-                <MdOutlineEdit />
-              </button>
+              {isEditing && editingRow === tableMeta.rowIndex ? (
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditingRow(null);
+                    handleUpdate(rowData);
+                    showEditBox();
+                  }}
+                >
+             <AiOutlineSave />
+                </button>
+              ) : (
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
+                  }}
+                >
+                  <MdOutlineEdit />
+                </button>
+              )}
+        
+
+
+              
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-              <button
+            <button
                 className="delete-btn"
-                onClick={() => handleDelete(rowData[0])}
+                onClick={() => {
+                  setDeleteId(rowData[0]);
+                  showConfirmationBox();
+                }}
               >
                 <MdDeleteForever />
               </button>
@@ -256,9 +291,13 @@ function Kpi(props) {
           <Loader />
         </div>
       ) : (
+      
+        <div>
+
+        
         <Box sx={{ maxWidth: "75%", margin: "auto" }}>
           <MUIDataTable
-            title={"Kpis"}
+    title={<div><button className='addkpi' onClick={openKpiPopup}><AiOutlinePlus/></button> <span className="kpititle">Kpis</span></div>}
             data={rows}
             columns={columns}
             options={options}
@@ -270,8 +309,12 @@ function Kpi(props) {
               textAlign: "center",
             }}
           />
-          <AdminPopup />
+
+          <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+          <showEditBox handleUpdate={handleUpdate}  id={editingRow}/>
+          <KpiPopup />
         </Box>
+      </div>
       )}
     </>
   );
