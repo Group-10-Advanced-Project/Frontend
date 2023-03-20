@@ -1,0 +1,21 @@
+.edit-popup {
+    text-align: center;
+}
+
+.edit-popup p {
+    font-size: 20px;
+}
+
+.edit-popup div {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.edit-popup #confirmation-delete-btn {
+    background: #e52f3f;
+}
+
+.edit-popup #confirmation-delete-btn:hover {
+    background: #d11a2a;
+}
