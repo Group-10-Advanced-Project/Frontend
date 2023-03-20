@@ -1,6 +1,4 @@
-import logo from "./logo.svg";
 import "./App.css";
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Admin from "./pages/admin/admin.js";
 import Dashboard from "./pages/dashboard/dashboard.js";
