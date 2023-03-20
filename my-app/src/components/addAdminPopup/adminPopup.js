@@ -3,6 +3,7 @@ import "./adminPopup.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 export default function AdminPopup() {
   const [first_name, setFirsName] = useState("");
@@ -13,10 +14,11 @@ export default function AdminPopup() {
 
   const addAdmin = async (e) => {
     e.preventDefault();
+    const token = Cookies.get("token");
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/addadmin",
+        "http://localhost:8000/api/auth/addadmin",
         {
           first_name,
           last_name,
@@ -27,7 +29,7 @@ export default function AdminPopup() {
         {
           // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg2NTAzNTIsImV4cCI6MTY3ODY1Mzk1MiwibmJmIjoxNjc4NjUwMzUyLCJqdGkiOiJhNDhMSGlIbE1qR2hOUDMxIiwic3ViIjoiNSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.9vHnV3_QbQmGKMbn5XJcWjiEpeSh6fBirrdIzaNWDnc`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
@@ -41,7 +43,7 @@ export default function AdminPopup() {
   };
 
   function closePopup() {
-    document.querySelector("#modal").close();
+    document.querySelector(".admin-popup").close();
   }
 
   return (

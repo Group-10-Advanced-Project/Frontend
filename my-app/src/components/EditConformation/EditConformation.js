@@ -1,6 +1,6 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import "./confirmationPopup.css";
+import "./EditConformation.css";
 
 export default function ConfirmationPopup(props) {
   function closePopup() {
@@ -8,8 +8,8 @@ export default function ConfirmationPopup(props) {
   }
 
   return (
-    <dialog className="confirmation-popup" id="modal">
-      <p>Are you sure you want to delete?</p>
+    <dialog className="edit-popup" id="modal">
+      <p>Are you sure that you want to edit this?</p>
       <div>
         <button
           id="confirmation-delete-btn"
