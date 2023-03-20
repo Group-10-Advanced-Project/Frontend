@@ -9,6 +9,7 @@ import Projects from "./pages/projects/projects.js";
 import NewAdmin from "./pages/admin/create-admin.js";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth.js";
+import Header from "./components/header";
 // import Unauthorized from './components/Unauthorized';
 
 // const ROLES={
@@ -17,6 +18,7 @@ import RequireAuth from "./components/RequireAuth.js";
 // }
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<Layout />}>
         {/*Public Routes*/}
@@ -36,6 +38,8 @@ function App() {
         <Route path="newAdmin" element={<NewAdmin />} />
       </Route>
     </Routes>
+    <Header />
+    </>
   );
 }
 
