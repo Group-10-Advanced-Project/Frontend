@@ -13,7 +13,7 @@ import { BiLogOut } from "react-icons/bi";
 
 import logo from "../../erp.png";
 function SideNav(props) {
-  if (useLocation().pathname == "/login") return null;
+  if (useLocation().pathname === "/login") return null;
   return (
     <>
       <nav>
