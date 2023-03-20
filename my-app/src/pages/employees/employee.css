@@ -1,0 +1,38 @@
+
+.main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .header-cell{
+    background-color: #5cbdcb;
+    color: white;
+    font-weight: bold;
+     justify-self: center;
+     order: 2;
+  }
+  
+  .employeeTitle{
+    color: #5cbdcb;
+    align-self: flex-start;
+    margin: 0em  1em 1em;
+    border-bottom: #5cbdcb ;
+
+  }
+  
+  .css-hyum1k-MuiToolbar-root {
+   
+    background-color: #5cbdcb;
+}
+.EditInput{
+outline: none;
+/* border-bottom: #5cbdcb; */
+border-left:none ;
+border-top: none;
+border-right: none;
+border-radius: 5px;
+width: 7em;
+}
