@@ -263,7 +263,7 @@ function Kpi(props) {
 
   const options = {
     filterType: "checkbox",
-    responsive: "vertical",
+    responsive: "simple",
     rowsPerPageOptions: [5, 10, 20],
     selectableRows: "none",
     search: true,
