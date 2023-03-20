@@ -12,3 +12,12 @@
 .MuiPaper-root>.MuiToolbar-root .MuiSvgIcon-root {
     color: #fff;
 }
+
+.addkpi{
+   margin-top: 10px;
+}
+.kpititle{
+    font-weight: bold;
+    font-size: 20px;
+    margin-left:2px ;
+}
