@@ -9,6 +9,7 @@ import Projects from "./pages/projects/projects.js";
 import NewAdmin from "./pages/admin/create-admin.js";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth.js";
+import Kpi from "./pages/Kpis/Kpi.js";
 // import Unauthorized from './components/Unauthorized';
 
 // const ROLES={
@@ -31,6 +32,8 @@ function App() {
         <Route path="employee" element={<Employee />} />
         <Route path="team" element={<Teams />} />
         <Route path="project" element={<Projects />} />
+        <Route path="Kpi" element={<Kpi />} />
+
       </Route>
       <Route element={<RequireAuth />}>
         <Route path="newAdmin" element={<NewAdmin />} />
