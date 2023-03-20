@@ -50,7 +50,8 @@ function Project(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
+  const [deleteId, setDeleteId] = useState();
+  const token = Cookies.get("token");
   const adminSuper = Cookies.get("super-admin");
 
   // The useEffect hook is used to execute the getData function and update the state variables when the component mounts. The [] as a second argument to useEffect is used to ensure that the effect is only executed once when the component mounts.
@@ -60,11 +61,13 @@ function Project(props) {
     getData();
   }, []);
 
-  console.log("Loading:", Loading);
-
   function openProjectPopup() {
     document.querySelector(".project-popup").showModal();
   }
+
+  const showConfirmationBox = () => {
+    document.querySelector(".confirmation-popup").showModal();
+  };
   // This code creates an array of rows that will be used as data for the MUIDataTable component.
   //If the Data state variable is not null or undefined, it will be used to create the rows using the createData function. Otherwise, an empty array will be created using the map method.
   const rows =
@@ -118,15 +121,15 @@ function Project(props) {
         },
       })
       .then((response) => {
-        setData(response.data.message);
+        setData(response.data.data);
+        console.log(Data);
         setLoading(false);
-        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
       });
-
+  };
   // This code is a function called handleUpdate that takes in a rowData parameter. It sets the state variable editingRow to true, then makes an HTTP PATCH request to update a row in a database. The request URL is constructed using the rowData[0] value as the ID of the row to update. The request body includes the name and is_active fields from the rowData array. The request includes an authorization header containing a bearer token. If the request is successful, the getData function is called to update the table with the new data, and the rowData array is logged to the console. If the request fails, the error is logged to the console.
   const handleUpdate = (rowData) => {
     setEditingRow(true);
@@ -139,7 +142,7 @@ function Project(props) {
           name: rowData[1],
           about: rowData[2],
           status: rowData[3],
-          team_id: rowData[4]
+          team_id: rowData[4],
         },
         {
           headers: {
@@ -157,9 +160,9 @@ function Project(props) {
       });
   };
 
-// This code defines an array of objects representing the columns of a table. Each object contains a name property that defines the name of the column, a label property that defines the header of the column, and an options property that contains options for the column.
-// For columns that are editable (name, about, status, and team_id), the customBodyRender option defines a function that returns the appropriate content for the cell. The function checks if the current row is being edited, and if it is, renders an input field with the current value of the cell. Otherwise, it simply renders the value of the cell.
-// For the actions column, the customBodyRender option defines a function that returns two buttons for editing and deleting the current row. When the edit button is clicked, the handleUpdate function is called with the current row data as an argument. When the delete button is clicked, the handleDelete function is called with the ID of the current row as an argument.
+  // This code defines an array of objects representing the columns of a table. Each object contains a name property that defines the name of the column, a label property that defines the header of the column, and an options property that contains options for the column.
+  // For columns that are editable (name, about, status, and team_id), the customBodyRender option defines a function that returns the appropriate content for the cell. The function checks if the current row is being edited, and if it is, renders an input field with the current value of the cell. Otherwise, it simply renders the value of the cell.
+  // For the actions column, the customBodyRender option defines a function that returns two buttons for editing and deleting the current row. When the edit button is clicked, the handleUpdate function is called with the current row data as an argument. When the delete button is clicked, the handleDelete function is called with the ID of the current row as an argument.
   const columns = [
     {
       name: "id",
@@ -306,7 +309,10 @@ function Project(props) {
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               <button
                 className="delete-btn"
-                onClick={() => handleDelete(rowData[0])}
+                onClick={() => {
+                  setDeleteId(rowData[0]);
+                  showConfirmationBox();
+                }}
               >
                 <MdDeleteForever />
               </button>
@@ -354,31 +360,28 @@ function Project(props) {
       ) : (
         <div>
           {console.log(adminSuper)}
-          {parseInt(adminSuper) ? (
-            <button onClick={openProjectPopup}>Add Project +</button>
-          ) : null}
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-            title={"Projects"}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
-          <ConfirmationPopup handleDelete={handleDelete} id={deleted} />
-          <ProjectPopup />
-        </Box>
+          {<button onClick={openProjectPopup}>Add Project +</button>}
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={"Projects"}
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
+            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+            <ProjectPopup />
+          </Box>
         </div>
       )}
     </>
   );
-}
 }
 
 export default Project;
