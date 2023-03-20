@@ -9,6 +9,7 @@ import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
 import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
+import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
 
 // The purpose of this function is to create an object representing a row of data for display in a table or list. Each parameter corresponds to a column of data, and the function returns an object with properties representing each column. The resulting object can be used to populate a table or list of data.
 function createData(
@@ -33,24 +34,13 @@ function createData(
   };
 }
 
-//   const testRow = createData(
-//     1,
-//     "Front-end",
-//     "erp MdDesignServices",
-//     "development",
-//     1,
-//     "Belal Amen",
-//     "2023",
-//     "2023"
-//   );
-//   console.log(testRow);
-
 // The 'Project' component is responsible for rendering the admin dashboard and displaying a table of project data. The Loading state variable is used to conditionally render a loading indicator while data is being fetched from the server. The Data state variable will hold the project data retrieved from the server, and editingRow is used to keep track of the currently edited row.
 function Project(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState();
+  const [isEditing, setIsEditing] = useState(false);
   const token = Cookies.get("token");
   const adminSuper = Cookies.get("super-admin");
 
@@ -168,7 +158,7 @@ function Project(props) {
       name: "id",
       label: "ID",
       options: {
-        display: "excluded",
+      display: "excluded",
       },
     },
     {
@@ -300,12 +290,28 @@ function Project(props) {
           const id = rowData[0];
           return (
             <>
-              <button
-                className="edit-btn"
-                onClick={() => handleUpdate(rowData)}
-              >
-                <MdOutlineEdit />
-              </button>
+              {isEditing && editingRow === tableMeta.rowIndex ? (
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditingRow(null);
+                    handleUpdate(rowData);
+                  }}
+                >
+                  <AiOutlineSave />
+                </button>
+              ) : (
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
+                  }}
+                >
+                  <MdOutlineEdit />
+                </button>
+              )}
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               <button
                 className="delete-btn"
@@ -359,11 +365,23 @@ function Project(props) {
         </div>
       ) : (
         <div>
-          {console.log(adminSuper)}
-          {<button onClick={openProjectPopup}>Add Project +</button>}
+          {/* {console.log(adminSuper)}
+          {<button onClick={openProjectPopup}>Add Project +</button>} */}
           <Box sx={{ maxWidth: "75%", margin: "auto" }}>
             <MUIDataTable
-              title={"Projects"}
+              // title={"Projects"}
+              title={
+                parseInt(adminSuper) ? (
+                  <div>
+                    <button onClick={openProjectPopup}>
+                      <AiOutlinePlus />
+                    </button>
+                    <span className="kpititle">Projects</span>
+                  </div>
+                ) : (
+                  "Projects"
+                )
+              }
               data={rows}
               columns={columns}
               options={options}
