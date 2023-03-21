@@ -23,7 +23,7 @@ function SideNav(props) {
         </div>
 
         <div className={"bar"}>
-          <NavLink to={"/"}>
+          <NavLink to={"/dashboard"}>
             <RxDashboard className={"icons"} size={25} />
             <b></b>
             <u></u>

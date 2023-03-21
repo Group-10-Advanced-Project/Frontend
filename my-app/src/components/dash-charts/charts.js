@@ -106,7 +106,7 @@ function Charts(props) {
  
   return (
     <div>
-      <h1>Dashboard</h1>
+      {/* <h1>Dashboard</h1> */}
       <div className="home-container">
         <div className="box">
           <div className="box-icon">
