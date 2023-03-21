@@ -7,11 +7,12 @@ import axios from "axios";
 import MUIDataTable from "mui-datatables";
 import  debounce from "lodash/debounce";
 import { Box } from "@mui/system";
-import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
-import { AiOutlineSave ,AiOutlinePlus} from "react-icons/ai";
-
+import {AiOutlinePlus} from "react-icons/ai";
+import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 
 function createData(
   employee_id,
@@ -96,6 +97,8 @@ function Employee(props) {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
+          
+          
         },
         
       })
@@ -108,7 +111,7 @@ function Employee(props) {
         console.log(error);
       });
   };
-
+  
   const handleUpdate = (rowData) => {
     setEditingRow(true);
     const token = Cookies.get("token");
@@ -363,42 +366,66 @@ function Employee(props) {
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
-                <button
-                  className="save-btn"
+               
+             <SaveAsRoundedIcon className="save-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
                     handleUpdate(rowData);
                     showEditBox();
                   }}
-                >
-             <AiOutlineSave />
-                </button>
+                  sx={{
+                  color: "#5cbdcb",
+                  cursor: "pointer",
+                  justifyItems: "center",
+                  alignItems: "center",
+
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                    transition: "0.2s ease-out",
+                  },
+                }} />
               ) : (
-                <button
-                  className="edit-btn" 
+                
+                  <AppRegistrationSharpIcon  className="edit-btn" 
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
-                  }}
-                >
-                  <MdOutlineEdit />
-                </button>
+                  }}sx={{
+                  color: "#5cbdcb",
+                  cursor: "pointer",
+                  justifyItems: "center",
+                  alignItems: "center",
+
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                    transition: "0.2s ease-out",
+                  },
+                }} />
+                
               )}
         
 
 
               
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-            <button
-                className="delete-btn"
+            
+                <DeleteRoundedIcon  className="delete-btn"
                 onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }}
-              >
-                <MdDeleteForever />
-              </button>
+                }}sx={{
+                  color: "#5cbdcb",
+                  cursor: "pointer",
+                  justifyItems: "center",
+                  alignItems: "center",
+
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                    transition: "0.2s ease-out",
+                  },
+                }} />
+              
             </>
           );
         },
