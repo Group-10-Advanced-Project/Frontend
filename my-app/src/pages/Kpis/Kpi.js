@@ -231,7 +231,7 @@ function Kpi(props) {
                 </button>
               ) : (
                 <button
-                  className="edit-btn"
+                  className="edit-btn" 
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);

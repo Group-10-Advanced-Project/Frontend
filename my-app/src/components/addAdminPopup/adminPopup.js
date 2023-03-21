@@ -27,7 +27,6 @@ export default function AdminPopup() {
           superAdmin,
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
