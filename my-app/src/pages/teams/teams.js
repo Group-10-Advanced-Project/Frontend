@@ -18,6 +18,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
+import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
 function createData(id, name, created_at, updated_at) {
   return {
     id,
@@ -310,9 +311,21 @@ function Team(props) {
             <MUIDataTable
               title={
                 <div>
-                  <button className="addkpi" onClick={openTeamPopup}>
-                    <AiOutlinePlus />
-                  </button>{" "}
+                  <LibraryAddRoundedIcon
+                    sx={{
+                      color: "#5cbdcb",
+                      cursor: "pointer",
+                      justifyItems: "center",
+                      alignItems: "center",
+
+                      "&:hover": {
+                        // transform: "scale(1.3)",
+                        transition: "0.2s ease-out",
+                      },
+                    }}
+                    className="addkpi"
+                    onClick={openTeamPopup}
+                  />{" "}
                   <span className="kpititle">Teams</span>
                 </div>
               }

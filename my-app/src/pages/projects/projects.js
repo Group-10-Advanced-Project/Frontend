@@ -13,6 +13,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
+
+import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
 // The purpose of this function is to create an object representing a row of data for display in a table or list. Each parameter corresponds to a column of data, and the function returns an object with properties representing each column. The resulting object can be used to populate a table or list of data.
 function createData(
   id,
@@ -401,9 +403,21 @@ function Project(props) {
               title={
                 parseInt(adminSuper) ? (
                   <div>
-                    <button onClick={openProjectPopup}>
-                      <AiOutlinePlus />
-                    </button>
+                    <LibraryAddRoundedIcon
+                      sx={{
+                        color: "#5cbdcb",
+                        cursor: "pointer",
+                        justifyItems: "center",
+                        alignItems: "center",
+
+                        "&:hover": {
+                          // transform: "scale(1.3)",
+                          transition: "0.2s ease-out",
+                        },
+                      }}
+                      onClick={openProjectPopup}
+                    />
+
                     <span className="kpititle">Projects</span>
                   </div>
                 ) : (
