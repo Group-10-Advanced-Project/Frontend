@@ -7,13 +7,15 @@ import Cookies from "js-cookie";
 
 function Header(props) {
   const [adminName, setAdminName] = useState("");
+  const token = Cookies.get("token");
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/api/auth/admin/1",
       {
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
         }
       })
       .then((response) => {
