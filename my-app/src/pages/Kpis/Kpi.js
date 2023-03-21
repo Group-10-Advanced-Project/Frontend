@@ -2,26 +2,21 @@ import "./Kpi.css";
 import React, { useState, useEffect } from "react";
 import KpiPopup from "../../components/addKpiPopup/kpiPopup.js";
 import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
-import showEditBox from "../../components/EditConformation/EditConformation.js"
+import showEditBox from "../../components/EditConformation/EditConformation.js";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import  debounce from "lodash/debounce";
+import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
-import {AiOutlinePlus} from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 
-function createData(
-  id,
-  name,
-  about,
-  created_at,
-  updated_at
-) {
+import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
+function createData(id, name, about, created_at, updated_at) {
   return {
     id,
     name,
@@ -37,7 +32,6 @@ function Kpi(props) {
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-
 
   useEffect(() => {
     setLoading(true);
@@ -82,12 +76,12 @@ function Kpi(props) {
 
   const getData = () => {
     const token = Cookies.get("token");
-    axios.get("http://127.0.0.1:8000/api/getAllkpi", {
+    axios
+      .get("http://127.0.0.1:8000/api/getAllkpi", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-        
       })
       .then((response) => {
         setData(response.data.data);
@@ -108,7 +102,6 @@ function Kpi(props) {
         {
           name: rowData[1],
           about: rowData[2],
-          
         },
         {
           headers: {
@@ -131,14 +124,14 @@ function Kpi(props) {
   const showEditBox = () => {
     document.querySelector(".edit-popup").showModal();
   };
-  
+
   const columns = [
     {
       name: "id",
       label: "ID",
       options: {
         display: "excluded",
-      },         
+      },
     },
     {
       name: "name",
@@ -167,7 +160,7 @@ function Kpi(props) {
             </div>
           );
         },
-         editable: true,
+        editable: true,
       },
     },
     {
@@ -200,7 +193,6 @@ function Kpi(props) {
         editable: true,
       },
     },
-  
 
     {
       name: "created_at",
@@ -220,51 +212,49 @@ function Kpi(props) {
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
-               
-             <SaveAsRoundedIcon  sx={{
-              color: "#5cbdcb",
-              cursor: "pointer",
-              justifyItems: "center",
-              alignItems: "center",
+                <SaveAsRoundedIcon
+                  sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
 
-              "&:hover": {
-                transform: "scale(1.3)",
-                transition: "0.2s ease-out",
-              },
-            }}  className="save-btn"
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                  className="save-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
                     handleUpdate(rowData);
                     showEditBox();
-                  }}/>
-                
+                  }}
+                />
               ) : (
-               
-                  <AppRegistrationSharpIcon  sx={{
+                <AppRegistrationSharpIcon
+                  sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
                     justifyItems: "center",
                     alignItems: "center",
-  
+
                     "&:hover": {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
-                  }}  className="edit-btn" 
+                  }}
+                  className="edit-btn"
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
-                  }}/>
-                
+                  }}
+                />
               )}
-        
-
-
-              
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-            
-                <DeleteRoundedIcon   sx={{
+              <DeleteRoundedIcon
+                sx={{
                   color: "#5cbdcb",
                   cursor: "pointer",
                   justifyItems: "center",
@@ -274,11 +264,13 @@ function Kpi(props) {
                     transform: "scale(1.3)",
                     transition: "0.2s ease-out",
                   },
-                }}  className="delete-btn" onClick={() => {
+                }}
+                className="delete-btn"
+                onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }} />
-            
+                }}
+              />
             </>
           );
         },
@@ -316,30 +308,44 @@ function Kpi(props) {
           <Loader />
         </div>
       ) : (
-      
         <div>
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={
+                <div>
+                  
+                    <LibraryAddRoundedIcon sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
 
-        
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-    title={<div><button className='addkpi' onClick={openKpiPopup}><AiOutlinePlus/></button> <span className="kpititle">Kpis</span></div>}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
+                    "&:hover": {
+                      // transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }} className="addkpi" onClick={openKpiPopup}/>
+                  {" "}
+                  <span className="kpititle">Kpis</span>
+                </div>
+              }
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
 
-          <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-          <showEditBox handleUpdate={handleUpdate}  id={editingRow}/>
-          <KpiPopup />
-        </Box>
-      </div>
+            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+            <showEditBox handleUpdate={handleUpdate} id={editingRow} />
+            <KpiPopup />
+          </Box>
+        </div>
       )}
     </>
   );

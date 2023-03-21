@@ -13,6 +13,8 @@ import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+
+import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
 function createData(
   id,
   first_name,
@@ -377,9 +379,19 @@ function Admin(props) {
               title={
                 parseInt(adminSuper) ? (
                   <div>
-                    <button onClick={openAdminPopup}>
-                      <AiOutlinePlus />
-                    </button>
+                    
+                      <LibraryAddRoundedIcon sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
+
+                    "&:hover": {
+                      // transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}onClick={openAdminPopup} />
+                    
                     <span className="kpititle">Admins</span>
                   </div>
                 ) : (
