@@ -4,7 +4,7 @@ import React from "react";
 
 const PieGraph = () => {
     const state = {
-      labels: ["January", "February", "March", "April", "May"],
+      labels: [],
       datasets: [
         {
           label: "Rainfall",
