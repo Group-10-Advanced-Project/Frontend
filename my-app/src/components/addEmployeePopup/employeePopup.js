@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
+import Cookies from "js-cookie";
+
 
 export default function EmployeePopup() {
   const [employee_id, setEmployeeId] = useState(null);
@@ -14,6 +16,8 @@ export default function EmployeePopup() {
 
   const addEmployee = async (e) => {
     e.preventDefault();
+    const token = Cookies.get("token");
+
 
     try {
       const response = await axios.post(
@@ -28,9 +32,8 @@ export default function EmployeePopup() {
           team_id,
         },
         {
-          // token issue should be fixed after discussing others work
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2Nzg2NTAzNTIsImV4cCI6MTY3ODY1Mzk1MiwibmJmIjoxNjc4NjUwMzUyLCJqdGkiOiJhNDhMSGlIbE1qR2hOUDMxIiwic3ViIjoiNSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.9vHnV3_QbQmGKMbn5XJcWjiEpeSh6fBirrdIzaNWDnc`,
+            Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         }
@@ -44,7 +47,7 @@ export default function EmployeePopup() {
   };
 
   function closePopup() {
-    document.querySelector("#modal").close();
+    document.querySelector(".employee-popup").close();
   }
 
   return (

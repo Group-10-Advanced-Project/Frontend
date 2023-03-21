@@ -24,9 +24,9 @@ nav a {
     justify-content: center;
 }
 
-nav a:hover {
+/* nav a:hover {
     text-decoration: underline;
-}
+} */
 
 .setting {
     width: 80%;

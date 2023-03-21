@@ -5,7 +5,7 @@ import ConfirmationPopup from "../../components/confirmationPopup/confirmationPo
 import showEditBox from "../../components/EditConformation/EditConformation.js"
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import debounce from "lodash/debounce";
+import  debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
 import Loader from "../../components/loader/loader";
@@ -149,7 +149,7 @@ function Kpi(props) {
           return (
             <div
               style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
+              // onClick={() => setEditingRow(rowIndex)}
             >
               {isEditing ? (
                 <input
@@ -165,7 +165,7 @@ function Kpi(props) {
             </div>
           );
         },
-        editable: true,
+         editable: true,
       },
     },
     {
@@ -179,7 +179,7 @@ function Kpi(props) {
           return (
             <div
               style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
+              // onClick={() => setEditingRow(rowIndex)}
             >
               {isEditing ? (
                 <input
@@ -231,7 +231,7 @@ function Kpi(props) {
                 </button>
               ) : (
                 <button
-                  className="edit-btn"
+                  className="edit-btn" 
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
@@ -263,7 +263,7 @@ function Kpi(props) {
 
   const options = {
     filterType: "checkbox",
-    responsive: "vertical",
+    responsive: "simple",
     rowsPerPageOptions: [5, 10, 20],
     selectableRows: "none",
     search: true,
