@@ -38,7 +38,7 @@ export default function TeamPopup() {
   }
 
   return (
-    <dialog className="kpi-popup" id="modal">
+    <dialog className="team-popup" id="modal">
       <AiOutlineClose onClick={closePopup} className="close-x"></AiOutlineClose>
       <form action="POSTToastContainer" method="dialog">
         <fieldset>

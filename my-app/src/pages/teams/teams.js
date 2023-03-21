@@ -5,6 +5,10 @@ import ConfirmationTeamPopup from "../../components/teamTable/confermationTeam-p
 import EditTeamConfirmationPopup from "../../components/teamTable/editConfirmationTeam"
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
+// import { Button } from "@mui/material";
+import GroupsIcon from '@mui/icons-material/Groups';
+import IconButton from "@material-ui/core/IconButton";
+
 import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
@@ -28,6 +32,7 @@ function createData(
 function Team(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
+  const [data, setdata]=useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -38,7 +43,7 @@ function Team(props) {
   }, []);
 
   function openTeamPopup() {
-    document.querySelector("#modal").showModal();
+    document.querySelector(".team-popup").showModal();
   }
   const rows =
     Data ||
@@ -71,6 +76,28 @@ function Team(props) {
         console.log(error);
       });
   };
+
+  const handleEmployeeList=(rowData)=>{
+    const token = Cookies.get("token");
+    axios
+    .get(
+      `http://127.0.0.1:8000/api/employee`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      setdata(response.data.message)
+      console.log(data)
+      getData();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
   const getData = () => {
     const token = Cookies.get("token");
@@ -121,9 +148,6 @@ function Team(props) {
     document.querySelector(".confirmation-popup").showModal();
   };
 
-  const showEditBox = () => {
-    document.querySelector(".edit-popup").showModal();
-  };
   const columns = [
     {
       name: "id",
@@ -171,6 +195,22 @@ function Team(props) {
       label: "Updated At",
     },
     {
+      name: "showTeam",
+      label : "Show Team",
+      width: 160,
+      options:{
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowIndex = tableMeta.rowIndex;
+          const isEditing = rowIndex === editingRow;
+          return (
+            <IconButton onClick={() => handleEmployeeList(tableMeta.rowData[0])}>
+              <GroupsIcon />
+            </IconButton>
+          )
+      },
+    },
+  },
+    {
       name: "actions",
       label: "Actions",
       options: {
@@ -186,7 +226,6 @@ function Team(props) {
                     setIsEditing(false);
                     setEditingRow(null);
                     handleUpdate(rowData);
-                    showEditBox();
                   }}
                 >
              <AiOutlineSave />
