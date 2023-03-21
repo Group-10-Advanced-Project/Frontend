@@ -1,0 +1,11 @@
+.header {
+    top: 0;
+    position: absolute;
+    right: 25px;
+overflow-y: hidden;
+}
+
+.admin-info {
+    display: flex;
+    align-items: center;
+}

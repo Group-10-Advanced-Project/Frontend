@@ -19,7 +19,7 @@ function Header(props) {
         }
       })
       .then((response) => {
-        setAdminName(response.data.name);
+        setAdminName(response.data.message.first_name);
       })
       .catch((error) => {
         console.log(error);
