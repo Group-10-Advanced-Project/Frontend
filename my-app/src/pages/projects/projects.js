@@ -9,10 +9,10 @@ import { Box } from "@mui/system";
 import Loader from "../../components/loader/loader";
 import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
-import {  AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 // The purpose of this function is to create an object representing a row of data for display in a table or list. Each parameter corresponds to a column of data, and the function returns an object with properties representing each column. The resulting object can be used to populate a table or list of data.
 function createData(
   id,
@@ -160,7 +160,7 @@ function Project(props) {
       name: "id",
       label: "ID",
       options: {
-      display: "excluded",
+        display: "excluded",
       },
     },
     {
@@ -293,46 +293,48 @@ function Project(props) {
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
-               
-                  <SaveAsRoundedIcon  sx={{
+                <SaveAsRoundedIcon
+                  sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
                     justifyItems: "center",
                     alignItems: "center",
-  
+
                     "&:hover": {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
-                  }}   className="edit-btn"
+                  }}
+                  className="edit-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
                     handleUpdate(rowData);
-                  }}  />
-                
+                  }}
+                />
               ) : (
-
-                  <AppRegistrationSharpIcon  sx={{
+                <AppRegistrationSharpIcon
+                  sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
                     justifyItems: "center",
                     alignItems: "center",
-  
+
                     "&:hover": {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
-                  }}  className="edit-btn"
+                  }}
+                  className="edit-btn"
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
-                  }} />
-                
+                  }}
+                />
               )}
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-
-                <DeleteRoundedIcon  sx={{
+              <DeleteRoundedIcon
+                sx={{
                   color: "#5cbdcb",
                   cursor: "pointer",
                   justifyItems: "center",
@@ -342,12 +344,13 @@ function Project(props) {
                     transform: "scale(1.3)",
                     transition: "0.2s ease-out",
                   },
-                }}  className="delete-btn"
+                }}
+                className="delete-btn"
                 onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }}/>
-            
+                }}
+              />
             </>
           );
         },
@@ -357,8 +360,7 @@ function Project(props) {
 
   const options = {
     filterType: "checkbox",
-    responsive: "vertical",
-    rowsPerPageOptions: [5, 10, 20],
+    responsive: "simple",
     selectableRows: "none",
     search: true,
     searchPlaceholder: "Search for Project",
@@ -368,7 +370,7 @@ function Project(props) {
     pagination: true,
     rowsPerPage: 5,
     loaded: true,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [5],
     onCellClick: (cellData, cellMeta) => {
       const rowIndex = cellMeta.rowIndex;
       if (cellMeta.colIndex === 3) {

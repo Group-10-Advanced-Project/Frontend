@@ -12,7 +12,7 @@ import Cookies from "js-cookie";
 import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 function createData(
   id,
   first_name,
@@ -150,10 +150,7 @@ function Admin(props) {
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div
-              style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
-            >
+            <div style={{ textAlign: "center" }}>
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -180,10 +177,7 @@ function Admin(props) {
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div
-              style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
-            >
+            <div style={{ textAlign: "center" }}>
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -210,10 +204,7 @@ function Admin(props) {
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div
-              style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
-            >
+            <div style={{ textAlign: "center" }}>
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -240,10 +231,7 @@ function Admin(props) {
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div
-              style={{ textAlign: "center" }}
-              onClick={() => setEditingRow(rowIndex)}
-            >
+            <div style={{ textAlign: "center" }}>
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -279,8 +267,48 @@ function Admin(props) {
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
-                
-                  <SaveAsRoundedIcon className="save-btn" sx={{
+                <SaveAsRoundedIcon
+                  className="save-btn"
+                  sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
+
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditingRow(null);
+                    handleUpdate(rowData);
+                  }}
+                />
+              ) : (
+                <AppRegistrationSharpIcon
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
+                  }}
+                  sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
+
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                />
+              )}
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              <DeleteRoundedIcon
+                sx={{
                   color: "#5cbdcb",
                   cursor: "pointer",
                   justifyItems: "center",
@@ -291,49 +319,12 @@ function Admin(props) {
                     transition: "0.2s ease-out",
                   },
                 }}
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditingRow(null);
-                    handleUpdate(rowData);
-                  }} />
-               
-              ) : (
-               
-                  <AppRegistrationSharpIcon  className="edit-btn"
-                  onClick={() => {
-                    setIsEditing(true);
-                    setEditingRow(tableMeta.rowIndex);
-                  }} sx={{
-                  color: "#5cbdcb",
-                  cursor: "pointer",
-                  justifyItems: "center",
-                  alignItems: "center",
-
-                  "&:hover": {
-                    transform: "scale(1.3)",
-                    transition: "0.2s ease-out",
-                  },
-                }} />
-               
-              )}
-              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-              
-                <DeleteRoundedIcon sx={{
-                  color: "#5cbdcb",
-                  cursor: "pointer",
-                  justifyItems: "center",
-                  alignItems: "center",
-
-                  "&:hover": {
-                    transform: "scale(1.3)",
-                    transition: "0.2s ease-out",
-                  },
-                }} className="delete-btn"
+                className="delete-btn"
                 onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }} />
-             
+                }}
+              />
             </>
           );
         },
@@ -343,8 +334,7 @@ function Admin(props) {
 
   const options = {
     filterType: "checkbox",
-    responsive: "vertical",
-    rowsPerPageOptions: [5, 10, 20],
+    responsive: "simple",
     selectableRows: "none",
     search: true,
     searchPlaceholder: "Search for Admin",
@@ -354,7 +344,7 @@ function Admin(props) {
     pagination: true,
     rowsPerPage: 5,
     loaded: true,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [5],
     onCellClick: (cellData, cellMeta) => {
       const rowIndex = cellMeta.rowIndex;
       if (cellMeta.colIndex === 3) {

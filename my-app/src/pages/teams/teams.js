@@ -1,12 +1,12 @@
- import "./teams.css" 
+import "./teams.css";
 import React, { useState, useEffect } from "react";
-import TeamPopup from "../../components/teamTable/teampopup"
+import TeamPopup from "../../components/teamTable/teampopup";
 import ConfirmationTeamPopup from "../../components/teamTable/confermationTeam-popup";
-import EditTeamConfirmationPopup from "../../components/teamTable/editConfirmationTeam"
+import EditTeamConfirmationPopup from "../../components/teamTable/editConfirmationTeam";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
 // import { Button } from "@mui/material";
-import GroupsIcon from '@mui/icons-material/Groups';
+import GroupsIcon from "@mui/icons-material/Groups";
 import IconButton from "@material-ui/core/IconButton";
 
 import debounce from "lodash/debounce";
@@ -14,16 +14,11 @@ import { Box } from "@mui/system";
 
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
-import { AiOutlinePlus} from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
-function createData(
-  id,
-  name,
-  created_at,
-  updated_at
-) {
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
+function createData(id, name, created_at, updated_at) {
   return {
     id,
     name,
@@ -35,7 +30,7 @@ function createData(
 function Team(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
-  const [data, setdata]=useState([]);
+  const [data, setdata] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -51,12 +46,7 @@ function Team(props) {
   const rows =
     Data ||
     [].map((item) =>
-      createData(
-        item.id,
-        item.name,
-        item.created_at,
-        item.updated_at
-      )
+      createData(item.id, item.name, item.created_at, item.updated_at)
     );
 
   const handleSearch = debounce((searchValue) => {
@@ -80,40 +70,37 @@ function Team(props) {
       });
   };
 
-  const handleEmployeeList=(rowData)=>{
+  const handleEmployeeList = (rowData) => {
     const token = Cookies.get("token");
     axios
-    .get(
-      `http://127.0.0.1:8000/api/employee`,
-      {
+      .get(`http://127.0.0.1:8000/api/employee`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-      }
-    )
-    .then((response) => {
-      setdata(response.data.message)
-      console.log(data)
-      getData();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+      })
+      .then((response) => {
+        setdata(response.data.message);
+        console.log(data);
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getData = () => {
     const token = Cookies.get("token");
-    axios.get("http://127.0.0.1:8000/api/team", {
+    axios
+      .get("http://127.0.0.1:8000/api/team", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-        
       })
       .then((response) => {
         setData(response.data.message.data);
-        console.log(Data)
+        console.log(Data);
         setLoading(false);
       })
       .catch((error) => {
@@ -121,7 +108,7 @@ function Team(props) {
         console.log(error);
       });
   };
-  
+
   const handleUpdate = (rowData) => {
     setEditingRow(true);
     const token = Cookies.get("token");
@@ -130,7 +117,6 @@ function Team(props) {
         `http://127.0.0.1:8000/api/team/${rowData[0]}`,
         {
           name: rowData[1],
-          
         },
         {
           headers: {
@@ -199,20 +185,22 @@ function Team(props) {
     },
     {
       name: "showTeam",
-      label : "Show Team",
+      label: "Show Team",
       width: 160,
-      options:{
+      options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           const isEditing = rowIndex === editingRow;
           return (
-            <IconButton onClick={() => handleEmployeeList(tableMeta.rowData[0])}>
+            <IconButton
+              onClick={() => handleEmployeeList(tableMeta.rowData[0])}
+            >
               <GroupsIcon />
             </IconButton>
-          )
+          );
+        },
       },
     },
-  },
     {
       name: "actions",
       label: "Actions",
@@ -222,48 +210,49 @@ function Team(props) {
           // const id = rowData[0];
           return (
             <>
-             {isEditing && editingRow === tableMeta.rowIndex ? (
-              
-             <SaveAsRoundedIcon  sx={{
-              color: "#5cbdcb",
-              cursor: "pointer",
-              justifyItems: "center",
-              alignItems: "center",
-
-              "&:hover": {
-                transform: "scale(1.3)",
-                transition: "0.2s ease-out",
-              },
-            }}  className="save-btn"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditingRow(null);
-                    handleUpdate(rowData);
-                  }}/>
-              
-              ) : (
-               
-                  <AppRegistrationSharpIcon  sx={{
+              {isEditing && editingRow === tableMeta.rowIndex ? (
+                <SaveAsRoundedIcon
+                  sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
                     justifyItems: "center",
                     alignItems: "center",
-  
+
                     "&:hover": {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
-                  }}  className="edit-btn"
+                  }}
+                  className="save-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditingRow(null);
+                    handleUpdate(rowData);
+                  }}
+                />
+              ) : (
+                <AppRegistrationSharpIcon
+                  sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
+
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                  className="edit-btn"
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
-                  }} />
-               
+                  }}
+                />
               )}
-
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-       
-                <DeleteRoundedIcon   sx={{
+              &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              <DeleteRoundedIcon
+                sx={{
                   color: "#5cbdcb",
                   cursor: "pointer",
                   justifyItems: "center",
@@ -273,12 +262,13 @@ function Team(props) {
                     transform: "scale(1.3)",
                     transition: "0.2s ease-out",
                   },
-                }}  className="delete-btn"
+                }}
+                className="delete-btn"
                 onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }}/>
-           
+                }}
+              />
             </>
           );
         },
@@ -286,11 +276,9 @@ function Team(props) {
     },
   ];
 
-  
   const options = {
     filterType: "checkbox",
-    responsive: "vertical",
-    rowsPerPageOptions: [5, 10, 20],
+    responsive: "simple",
     selectableRows: "none",
     search: true,
     searchPlaceholder: "Search for Team",
@@ -300,7 +288,7 @@ function Team(props) {
     pagination: true,
     rowsPerPage: 5,
     loaded: true,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [5],
     onCellClick: (cellData, cellMeta) => {
       const rowIndex = cellMeta.rowIndex;
       if (cellMeta.colIndex === 3) {
@@ -317,30 +305,37 @@ function Team(props) {
           <Loader />
         </div>
       ) : (
-      
         <div>
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={
+                <div>
+                  <button className="addkpi" onClick={openTeamPopup}>
+                    <AiOutlinePlus />
+                  </button>{" "}
+                  <span className="kpititle">Teams</span>
+                </div>
+              }
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
 
-        
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-    title={<div><button className='addkpi' onClick={openTeamPopup}><AiOutlinePlus/></button> <span className="kpititle">Teams</span></div>}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
-
-          <ConfirmationTeamPopup handleDelete={handleDelete} id={deleteId} />
-          <EditTeamConfirmationPopup handleUpdate={handleUpdate}  id={editingRow}/>
-          <TeamPopup />
-        </Box>
-      </div>
+            <ConfirmationTeamPopup handleDelete={handleDelete} id={deleteId} />
+            <EditTeamConfirmationPopup
+              handleUpdate={handleUpdate}
+              id={editingRow}
+            />
+            <TeamPopup />
+          </Box>
+        </div>
       )}
     </>
   );

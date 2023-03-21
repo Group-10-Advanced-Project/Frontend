@@ -2,17 +2,17 @@ import "./employee.css";
 import React, { useState, useEffect } from "react";
 import EmployeePopup from "../../components/addEmployeePopup/employeePopup.js";
 import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
-import showEditBox from "../../components/EditConformation/EditConformation.js"
+import showEditBox from "../../components/EditConformation/EditConformation.js";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import  debounce from "lodash/debounce";
+import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
-import {AiOutlinePlus} from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 
 function createData(
   employee_id,
@@ -26,13 +26,13 @@ function createData(
   updated_at
 ) {
   return {
-  employee_id,
-  first_name,
-  last_name,
-  email,
-  phone_number,
-  picture,
-  team_id,
+    employee_id,
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    picture,
+    team_id,
     created_at,
     updated_at,
   };
@@ -44,7 +44,6 @@ function Employee(props) {
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-
 
   useEffect(() => {
     setLoading(true);
@@ -93,14 +92,12 @@ function Employee(props) {
 
   const getData = () => {
     const token = Cookies.get("token");
-    axios.get("http://127.0.0.1:8000/api/employee", {
+    axios
+      .get("http://127.0.0.1:8000/api/employee", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
-          
-          
         },
-        
       })
       .then((response) => {
         setData(response.data.data);
@@ -111,7 +108,7 @@ function Employee(props) {
         console.log(error);
       });
   };
-  
+
   const handleUpdate = (rowData) => {
     setEditingRow(true);
     const token = Cookies.get("token");
@@ -125,7 +122,6 @@ function Employee(props) {
           email: rowData[4],
           phone_number: rowData[5],
           team_id: rowData[6],
-          
         },
         {
           headers: {
@@ -148,14 +144,14 @@ function Employee(props) {
   const showEditBox = () => {
     document.querySelector(".edit-popup").showModal();
   };
-  
+
   const columns = [
     {
       name: "employee_id",
       label: "ID",
       options: {
         display: "excluded",
-      },         
+      },
     },
     {
       name: "picture",
@@ -180,15 +176,15 @@ function Employee(props) {
                 />
               ) : (
                 <img
-                src={`http://localhost:8000${value}`}
-                alt="Employee"
-                style={{ width: 45, height: 45, borderRadius: "75%" }}
-              />
+                  src={`http://localhost:8000${value}`}
+                  alt="Employee"
+                  style={{ width: 45, height: 45, borderRadius: "75%" }}
+                />
               )}
             </div>
           );
         },
-         editable: true,
+        editable: true,
       },
     },
     {
@@ -283,7 +279,6 @@ function Employee(props) {
       },
     },
 
-
     {
       name: "phone_number",
       label: "Phone_number",
@@ -346,8 +341,6 @@ function Employee(props) {
       },
     },
 
-
-
     {
       name: "created_at",
       label: "Created At",
@@ -366,8 +359,8 @@ function Employee(props) {
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
-               
-             <SaveAsRoundedIcon className="save-btn"
+                <SaveAsRoundedIcon
+                  className="save-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
@@ -375,46 +368,45 @@ function Employee(props) {
                     showEditBox();
                   }}
                   sx={{
-                  color: "#5cbdcb",
-                  cursor: "pointer",
-                  justifyItems: "center",
-                  alignItems: "center",
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
 
-                  "&:hover": {
-                    transform: "scale(1.3)",
-                    transition: "0.2s ease-out",
-                  },
-                }} />
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                />
               ) : (
-                
-                  <AppRegistrationSharpIcon  className="edit-btn" 
+                <AppRegistrationSharpIcon
+                  className="edit-btn"
                   onClick={() => {
                     setIsEditing(true);
                     setEditingRow(tableMeta.rowIndex);
-                  }}sx={{
-                  color: "#5cbdcb",
-                  cursor: "pointer",
-                  justifyItems: "center",
-                  alignItems: "center",
+                  }}
+                  sx={{
+                    color: "#5cbdcb",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                    alignItems: "center",
 
-                  "&:hover": {
-                    transform: "scale(1.3)",
-                    transition: "0.2s ease-out",
-                  },
-                }} />
-                
+                    "&:hover": {
+                      transform: "scale(1.3)",
+                      transition: "0.2s ease-out",
+                    },
+                  }}
+                />
               )}
-        
-
-
-              
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-            
-                <DeleteRoundedIcon  className="delete-btn"
+              <DeleteRoundedIcon
+                className="delete-btn"
                 onClick={() => {
                   setDeleteId(rowData[0]);
                   showConfirmationBox();
-                }}sx={{
+                }}
+                sx={{
                   color: "#5cbdcb",
                   cursor: "pointer",
                   justifyItems: "center",
@@ -424,8 +416,8 @@ function Employee(props) {
                     transform: "scale(1.3)",
                     transition: "0.2s ease-out",
                   },
-                }} />
-              
+                }}
+              />
             </>
           );
         },
@@ -436,7 +428,6 @@ function Employee(props) {
   const options = {
     filterType: "checkbox",
     responsive: "simple",
-    rowsPerPageOptions: [5, 10, 20],
     selectableRows: "none",
     search: true,
     searchPlaceholder: "Search for Kpi",
@@ -446,7 +437,7 @@ function Employee(props) {
     pagination: true,
     rowsPerPage: 5,
     loaded: true,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [5],
     onCellClick: (cellData, cellMeta) => {
       const rowIndex = cellMeta.rowIndex;
       if (cellMeta.colIndex === 3) {
@@ -463,29 +454,33 @@ function Employee(props) {
           <Loader />
         </div>
       ) : (
-      
         <div>
+          <Box sx={{ maxWidth: "75%", margin: "auto" }}>
+            <MUIDataTable
+              title={
+                <div>
+                  <button className="addkpi" onClick={openEmployeePopup}>
+                    <AiOutlinePlus />
+                  </button>{" "}
+                  <span className="kpititle">Employee</span>
+                </div>
+              }
+              data={rows}
+              columns={columns}
+              options={options}
+              sx={{
+                width: "70%",
+                marginLeft: "390px",
+                marginY: "190px",
+                zIndex: 1,
+                textAlign: "center",
+              }}
+            />
 
-        
-        <Box sx={{ maxWidth: "75%", margin: "auto" }}>
-          <MUIDataTable
-    title={<div><button className='addkpi' onClick={openEmployeePopup}><AiOutlinePlus/></button> <span className="kpititle">Employee</span></div>}
-            data={rows}
-            columns={columns}
-            options={options}
-            sx={{
-              width: "70%",
-              marginLeft: "390px",
-              marginY: "190px",
-              zIndex: 1,
-              textAlign: "center",
-            }}
-          />
-
-          <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-          <EmployeePopup />
-        </Box>
-      </div>
+            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
+            <EmployeePopup />
+          </Box>
+        </div>
       )}
     </>
   );
