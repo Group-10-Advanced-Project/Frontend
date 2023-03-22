@@ -5,7 +5,6 @@ import ConfirmationTeamPopup from "../../components/teamTable/confermationTeam-p
 import EditTeamConfirmationPopup from "../../components/teamTable/editConfirmationTeam";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-// import { Button } from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -14,7 +13,6 @@ import { Box } from "@mui/system";
 
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
-import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
@@ -347,7 +345,7 @@ function Team(props) {
               handleUpdate={handleUpdate}
               id={editingRow}
             />
-            <TeamPopup />
+            <TeamPopup getData={getData} />
           </Box>
         </div>
       )}

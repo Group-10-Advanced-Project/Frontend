@@ -35,12 +35,6 @@ function SideNav(props) {
             <u></u>
             <span>Admin</span>
           </NavLink>
-          <NavLink to={"/employee"}>
-            <BsPersonVcard className={"icons"} size={25} />
-            <b></b>
-            <u></u>
-            <span>Employees</span>
-          </NavLink>
           <NavLink to={"/team"}>
             <RiTeamLine className={"icons"} size={25} />
             <b></b>
@@ -58,6 +52,12 @@ function SideNav(props) {
             <b></b>
             <u></u>
             <span>KPIS</span>
+          </NavLink>
+          <NavLink to={"/employee"}>
+            <BsPersonVcard className={"icons"} size={25} />
+            <b></b>
+            <u></u>
+            <span>Employees</span>
           </NavLink>
           {/* <NavLink to={"/reports"}>
             <TbReportSearch className={"icons"} size={25} />

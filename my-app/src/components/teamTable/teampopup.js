@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import "./teampopup.css"
+import "./teampopup.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
 import Cookies from "js-cookie";
 
-
-export default function TeamPopup() {
+export default function TeamPopup(props) {
   const [name, setName] = useState("");
 
   const addTeam = async (e) => {
     e.preventDefault();
-    const token = Cookies.get('token')
+    const token = Cookies.get("token");
     try {
       const response = await axios.post(
         "http://localhost:8000/api/team",
@@ -25,16 +24,22 @@ export default function TeamPopup() {
           },
         }
       );
-
       toast.success("Team was added");
-      setTimeout(() => window.location.reload(true), 1000);
+      setTimeout(() => {
+        toast.dismiss();
+        closePopup();
+        props.getData();
+      }, 2000);
     } catch (error) {
       toast.error("Values entered are invalid");
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
     }
   };
 
   function closePopup() {
-    document.querySelector(".kpi-popup").close();
+    document.querySelector(".team-popup").close();
   }
 
   return (

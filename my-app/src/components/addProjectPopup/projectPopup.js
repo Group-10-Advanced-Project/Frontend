@@ -17,7 +17,7 @@ export default function ProjectPopup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/addproject",
+        "http://localhost:8000/api/project",
         {
           name,
           about,
@@ -33,9 +33,15 @@ export default function ProjectPopup() {
       );
 
       toast.success("Project was added");
-      setTimeout(() => window.location.reload(true), 1000);
+      setTimeout((e) => {
+        toast.dismiss();
+        closePopup();
+      }, 2000);
     } catch (error) {
       toast.error("Values entered are invalid");
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
     }
   };
 

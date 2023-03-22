@@ -345,7 +345,7 @@ function Kpi(props) {
 
             <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
             <showEditBox handleUpdate={handleUpdate} id={editingRow} />
-            <KpiPopup />
+            <KpiPopup getData={getData} />
           </Box>
         </div>
       )}

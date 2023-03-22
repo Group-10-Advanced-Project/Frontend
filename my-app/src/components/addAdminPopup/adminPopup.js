@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
 import Cookies from "js-cookie";
 
-export default function AdminPopup() {
+export default function AdminPopup(props) {
   const [first_name, setFirsName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,8 +35,16 @@ export default function AdminPopup() {
       );
       console.log(response);
       toast.success("Admin was added");
+      setTimeout(() => {
+        toast.dismiss();
+        closePopup();
+        props.getData();
+      }, 2000);
     } catch (error) {
       toast.error("Values entered are invalid");
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
     }
   };
 
@@ -95,7 +103,7 @@ export default function AdminPopup() {
           <button onClick={addAdmin}>Submit</button>
         </fieldset>
       </form>
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </dialog>
   );
 }

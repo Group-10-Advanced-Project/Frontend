@@ -34,18 +34,16 @@ function Login() {
         headers: { "content-type": "application/json" },
         withCredentials: true,
       });
-      console.log("response", response);
-      console.log("user", response.data.user);
       const superadmin = response.data.user.is_super_admin;
-      console.log(superadmin);
       const access_token = response?.data?.access_token;
 
       setCookie("token", response.data.access_token);
       setCookie("super-admin", response.data.user.is_super_admin);
       setAuth({ email, password, superadmin, access_token });
       localStorage.setItem("token", "true");
+
       toast.success("Login successful!");
-      //window.location.href = '/';
+
       navigate(from, { replace: true });
     } catch (error) {
       if (!error.response) {

@@ -403,7 +403,7 @@ function Admin(props) {
               }}
             />
             <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-            <AdminPopup />
+            <AdminPopup getData={getData} />
           </Box>
         </div>
       )}
