@@ -28,3 +28,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiBox-root.css-1v9ebjv {
+  margin-top: 5%;
+}
+
+@media screen and (max-width: 1080px) { 
+  .MuiBox-root.css-1v9ebjv {
+      margin-top: 7%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+  .MuiBox-root.css-1v9ebjv {
+    margin-top: 15%;
+  }
+}

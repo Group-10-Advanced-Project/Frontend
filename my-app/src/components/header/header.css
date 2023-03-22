@@ -1,11 +1,25 @@
 .header {
-    top: 0;
+    top: 10px;
     position: absolute;
-    right: 25px;
+    right: 30px;
 overflow-y: hidden;
 }
 
 .admin-info {
     display: flex;
     align-items: center;
+}
+
+.admin-info > svg {
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 1080px) { 
+    .header {
+        top: 5px;
+        right: 10px;
+    }
+    .admin-info>svg {
+        margin-right: 5px;
+    }
 }

@@ -1,3 +1,7 @@
+.wrapper {
+    padding-inline: 30px;
+}
+
 .home-container {
     display: flex;
     justify-content: space-evenly;
