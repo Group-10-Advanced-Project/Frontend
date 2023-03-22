@@ -45,6 +45,7 @@ function Admin(props) {
 
   useEffect(() => {
     setLoading(true);
+    document.title = "Admins";
     getData();
   }, []);
 

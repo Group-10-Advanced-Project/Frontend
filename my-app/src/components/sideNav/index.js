@@ -59,12 +59,12 @@ function SideNav(props) {
             <u></u>
             <span>KPIS</span>
           </NavLink>
-          <NavLink to={"/reports"}>
+          {/* <NavLink to={"/reports"}>
             <TbReportSearch className={"icons"} size={25} />
             <b></b>
             <u></u>
             <span>Reports</span>
-          </NavLink>
+          </NavLink> */}
         </div>
 
         <div className={"setting"}>

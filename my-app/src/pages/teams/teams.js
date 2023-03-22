@@ -38,6 +38,7 @@ function Team(props) {
 
   useEffect(() => {
     setLoading(true);
+    document.title = "Teams";
     getData();
   }, []);
 

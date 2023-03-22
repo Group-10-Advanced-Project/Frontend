@@ -11,7 +11,7 @@ export default function AdminPopup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [superAdmin, setSuperAdmin] = useState(0);
-
+  console.log(superAdmin);
   const addAdmin = async (e) => {
     e.preventDefault();
     const token = Cookies.get("token");
@@ -33,9 +33,8 @@ export default function AdminPopup() {
           },
         }
       );
-
+      console.log(response);
       toast.success("Admin was added");
-      setTimeout(() => window.location.reload(true), 1000);
     } catch (error) {
       toast.error("Values entered are invalid");
     }

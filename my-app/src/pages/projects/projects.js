@@ -50,8 +50,8 @@ function Project(props) {
 
   // The useEffect hook is used to execute the getData function and update the state variables when the component mounts. The [] as a second argument to useEffect is used to ensure that the effect is only executed once when the component mounts.
   useEffect(() => {
-    console.log("Fetching data...");
     setLoading(true);
+    document.title = "Projects";
     getData();
   }, []);
 

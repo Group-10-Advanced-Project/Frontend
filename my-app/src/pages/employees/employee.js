@@ -47,6 +47,7 @@ function Employee(props) {
 
   useEffect(() => {
     setLoading(true);
+    document.title = "Employees";
     getData();
   }, []);
 

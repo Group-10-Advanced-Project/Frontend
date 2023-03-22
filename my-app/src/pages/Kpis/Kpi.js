@@ -35,6 +35,7 @@ function Kpi(props) {
 
   useEffect(() => {
     setLoading(true);
+    document.title = "Kpis";
     getData();
   }, []);
 

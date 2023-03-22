@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./login.css";
 import useAuth from "../../hooks/useAuth";
 import { AiOutlineMail, AiFillLock } from "react-icons/ai";
@@ -18,6 +18,10 @@ function Login() {
   const location = useLocation();
   const [cookies, setCookie] = useCookies(["name"]);
   const from = location.state?.from?.pathname || "/dashboard";
+
+  useEffect(() => {
+    document.title = "Login";
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
