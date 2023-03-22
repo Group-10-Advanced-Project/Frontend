@@ -1,67 +1,54 @@
-import "./admin.css";
+import "./Kpi.css";
 import React, { useState, useEffect } from "react";
-import AdminPopup from "../../components/addAdminPopup/adminPopup";
+import KpiPopup from "../../components/addKpiPopup/kpiPopup.js";
+import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
+import showEditBox from "../../components/EditConformation/EditConformation.js";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
 import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
-import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
+
 import Loader from "../../components/loader/loader";
-import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
-import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 
 import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
-function createData(
-  id,
-  first_name,
-  last_name,
-  email,
-  is_super_admin,
-  created_at,
-  updated_at
-) {
+function createData(id, name, about, created_at, updated_at) {
   return {
     id,
-    first_name,
-    last_name,
-    email,
-    is_super_admin,
+    name,
+    about,
     created_at,
     updated_at,
   };
 }
 
-function Admin(props) {
+function Kpi(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const adminSuper = Cookies.get("super-admin");
 
   useEffect(() => {
     setLoading(true);
-    document.title = "Admins";
+    document.title = "Kpis";
     getData();
   }, []);
 
-  function openAdminPopup() {
-    document.querySelector(".admin-popup").showModal();
+  function openKpiPopup() {
+    document.querySelector(".kpi-popup").showModal();
   }
-
   const rows =
     Data ||
     [].map((item) =>
       createData(
         item.id,
-        item.first_name,
-        item.last_name,
-        item.email,
-        item.is_super_admin,
+        item.name,
+        item.about,
         item.created_at,
         item.updated_at
       )
@@ -74,7 +61,7 @@ function Admin(props) {
   const handleDelete = (rowsDeleted) => {
     const token = Cookies.get("token");
     axios
-      .delete(`http://127.0.0.1:8000/api/auth/admin/${rowsDeleted}`, {
+      .delete(`http://127.0.0.1:8000/api/deletekpi/${rowsDeleted}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -91,14 +78,14 @@ function Admin(props) {
   const getData = () => {
     const token = Cookies.get("token");
     axios
-      .get("http://127.0.0.1:8000/api/admin", {
+      .get("http://127.0.0.1:8000/api/getAllkpi", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
-        setData(response.data.message);
+        setData(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -112,12 +99,10 @@ function Admin(props) {
     const token = Cookies.get("token");
     axios
       .patch(
-        `http://127.0.0.1:8000/api/auth/admin/${rowData[0]}`,
+        `http://127.0.0.1:8000/api/editKpi/${rowData[0]}`,
         {
-          first_name: rowData[1],
-          last_name: rowData[2],
-          email: rowData[3],
-          is_super_admin: rowData[4],
+          name: rowData[1],
+          about: rowData[2],
         },
         {
           headers: {
@@ -136,6 +121,11 @@ function Admin(props) {
   const showConfirmationBox = () => {
     document.querySelector(".confirmation-popup").showModal();
   };
+
+  const showEditBox = () => {
+    document.querySelector(".edit-popup").showModal();
+  };
+
   const columns = [
     {
       name: "id",
@@ -145,15 +135,18 @@ function Admin(props) {
       },
     },
     {
-      name: "first_name",
-      label: "First Name",
+      name: "name",
+      label: "Name",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div style={{ textAlign: "center" }}>
+            <div
+              style={{ textAlign: "center" }}
+              // onClick={() => setEditingRow(rowIndex)}
+            >
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -172,15 +165,18 @@ function Admin(props) {
       },
     },
     {
-      name: "last_name",
-      label: "Last Name",
+      name: "about",
+      label: "About",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div style={{ textAlign: "center" }}>
+            <div
+              style={{ textAlign: "center" }}
+              // onClick={() => setEditingRow(rowIndex)}
+            >
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -198,60 +194,7 @@ function Admin(props) {
         editable: true,
       },
     },
-    {
-      name: "email",
-      label: "Email",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          const isEditing = rowIndex === editingRow;
 
-          return (
-            <div style={{ textAlign: "center" }}>
-              {isEditing ? (
-                <input
-                  className="EditInput"
-                  value={value}
-                  onChange={(e) => {
-                    updateValue(e.target.value);
-                  }}
-                />
-              ) : (
-                value
-              )}
-            </div>
-          );
-        },
-        editable: true,
-      },
-    },
-    {
-      name: "is_super_admin",
-      label: "SUPER ADMIN",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          const isEditing = rowIndex === editingRow;
-
-          return (
-            <div style={{ textAlign: "center" }}>
-              {isEditing ? (
-                <input
-                  className="EditInput"
-                  value={value}
-                  onChange={(e) => {
-                    updateValue(e.target.value);
-                  }}
-                />
-              ) : (
-                value
-              )}
-            </div>
-          );
-        },
-        editable: true,
-      },
-    },
     {
       name: "created_at",
       label: "Created At",
@@ -271,7 +214,6 @@ function Admin(props) {
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
                 <SaveAsRoundedIcon
-                  className="save-btn"
                   sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
@@ -283,19 +225,16 @@ function Admin(props) {
                       transition: "0.2s ease-out",
                     },
                   }}
+                  className="save-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
                     handleUpdate(rowData);
+                    showEditBox();
                   }}
                 />
               ) : (
                 <AppRegistrationSharpIcon
-                  className="edit-btn"
-                  onClick={() => {
-                    setIsEditing(true);
-                    setEditingRow(tableMeta.rowIndex);
-                  }}
                   sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
@@ -306,6 +245,11 @@ function Admin(props) {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
+                  }}
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
                   }}
                 />
               )}
@@ -340,7 +284,7 @@ function Admin(props) {
     responsive: "simple",
     selectableRows: "none",
     search: true,
-    searchPlaceholder: "Search for Admin",
+    searchPlaceholder: "Search for Kpi",
     onSearchChange: (searchValue) => handleSearch(searchValue),
     download: true,
     print: true,
@@ -368,28 +312,24 @@ function Admin(props) {
           <Box sx={{ maxWidth: "75%", margin: "auto" }}>
             <MUIDataTable
               title={
-                parseInt(adminSuper) ? (
-                  <div>
-                    <LibraryAddRoundedIcon
-                      sx={{
-                        color: "#5cbdcb",
-                        cursor: "pointer",
-                        justifyItems: "center",
-                        alignItems: "center",
+                <div>
+                  <LibraryAddRoundedIcon
+                    sx={{
+                      color: "#5cbdcb",
+                      cursor: "pointer",
+                      justifyItems: "center",
+                      alignItems: "center",
 
-                        "&:hover": {
-                          // transform: "scale(1.3)",
-                          transition: "0.2s ease-out",
-                        },
-                      }}
-                      onClick={openAdminPopup}
-                    />
-
-                    <span className="kpititle">Admins</span>
-                  </div>
-                ) : (
-                  "Admins"
-                )
+                      "&:hover": {
+                        // transform: "scale(1.3)",
+                        transition: "0.2s ease-out",
+                      },
+                    }}
+                    className="addkpi"
+                    onClick={openKpiPopup}
+                  />{" "}
+                  <span className="kpititle">Kpis</span>
+                </div>
               }
               data={rows}
               columns={columns}
@@ -402,12 +342,14 @@ function Admin(props) {
                 textAlign: "center",
               }}
             />
+
             <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-            <AdminPopup getData={getData} />
+            <showEditBox handleUpdate={handleUpdate} id={editingRow} />
+            <KpiPopup getData={getData} />
           </Box>
         </div>
       )}
     </>
   );
 }
-export default Admin;
+export default Kpi;

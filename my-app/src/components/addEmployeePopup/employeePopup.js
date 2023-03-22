@@ -1,30 +1,35 @@
 import React, { useState } from "react";
-import "./adminPopup.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
 import Cookies from "js-cookie";
 
-export default function AdminPopup(props) {
+
+export default function EmployeePopup() {
+  const [employee_id, setEmployeeId] = useState(null);
   const [first_name, setFirsName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [superAdmin, setSuperAdmin] = useState(0);
-  console.log(superAdmin);
-  const addAdmin = async (e) => {
+  const [phone_number, setPhoneNumber] = useState(null);
+  const [picture, setPicture] = useState(null);
+  const [team_id, setTeamId] = useState(null);
+
+  const addEmployee = async (e) => {
     e.preventDefault();
     const token = Cookies.get("token");
 
+
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/addadmin",
+        "http://localhost:8000/api/employee",
         {
+          employee_id,
           first_name,
           last_name,
           email,
-          password,
-          superAdmin,
+          phone_number,
+          picture,
+          team_id,
         },
         {
           headers: {
@@ -33,29 +38,31 @@ export default function AdminPopup(props) {
           },
         }
       );
-      console.log(response);
-      toast.success("Admin was added");
-      setTimeout(() => {
-        toast.dismiss();
-        closePopup();
-        props.getData();
-      }, 2000);
+
+      toast.success("Employee was added successfully");
+      setTimeout(() => window.location.reload(true), 1000);
     } catch (error) {
       toast.error("Values entered are invalid");
-      setTimeout(() => {
-        toast.dismiss();
-      }, 2000);
     }
   };
 
   function closePopup() {
-    document.querySelector(".admin-popup").close();
+    document.querySelector(".employee-popup").close();
   }
 
   return (
-    <dialog className="admin-popup" id="modal">
+    <dialog className="employee-popup" id="modal">
       <AiOutlineClose onClick={closePopup} className="close-x"></AiOutlineClose>
       <form action="POSTToastContainer" method="dialog">
+        <fieldset>
+          <label>Employee ID</label>
+          <input
+            type="text"
+            min={0}
+            required
+            onChange={(e) => setEmployeeId(e.target.value)}
+          />
+        </fieldset>
         <fieldset>
           <label>First Name</label>
           <input
@@ -81,29 +88,35 @@ export default function AdminPopup(props) {
           />
         </fieldset>
         <fieldset>
-          <label>Password</label>
+          <label>Phone Number</label>
           <input
-            type="password"
+            type="text"
             required
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPhoneNumber(e.target.value)}
           />
         </fieldset>
         <fieldset>
-          <label>Super Admin</label>
+          <label>Picture</label>
           <input
-            type="number"
+            type="file"
+            required
+            onChange={(e) => setPicture(e.target.value)}
+          />
+        </fieldset>
+        <fieldset>
+          <label>Team ID</label>
+          <input
+            type="text"
             min={0}
-            max={1}
             required
-            onChange={(e) => setSuperAdmin(e.target.value)}
+            onChange={(e) => setTeamId(e.target.value)}
           />
         </fieldset>
-        <fieldset></fieldset>
         <fieldset>
-          <button onClick={addAdmin}>Submit</button>
+          <button onClick={addEmployee}>Submit</button>
         </fieldset>
       </form>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer />
     </dialog>
   );
 }

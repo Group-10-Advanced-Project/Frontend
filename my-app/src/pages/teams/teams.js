@@ -1,70 +1,52 @@
-import "./admin.css";
+import "./teams.css";
 import React, { useState, useEffect } from "react";
-import AdminPopup from "../../components/addAdminPopup/adminPopup";
+import TeamPopup from "../../components/teamTable/teampopup";
+import ConfirmationTeamPopup from "../../components/teamTable/confermationTeam-popup";
+import EditTeamConfirmationPopup from "../../components/teamTable/editConfirmationTeam";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
+import GroupsIcon from "@mui/icons-material/Groups";
+import IconButton from "@material-ui/core/IconButton";
+
 import debounce from "lodash/debounce";
 import { Box } from "@mui/system";
-import { MdDeleteForever, MdOutlineEdit } from "react-icons/md";
+
 import Loader from "../../components/loader/loader";
-import ConfirmationPopup from "../../components/confirmationPopup/confirmationPopup";
 import Cookies from "js-cookie";
-import { AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
 import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
-
 import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
-function createData(
-  id,
-  first_name,
-  last_name,
-  email,
-  is_super_admin,
-  created_at,
-  updated_at
-) {
+function createData(id, name, created_at, updated_at) {
   return {
     id,
-    first_name,
-    last_name,
-    email,
-    is_super_admin,
+    name,
     created_at,
     updated_at,
   };
 }
 
-function Admin(props) {
+function Team(props) {
   const [Loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
+  const [data, setdata] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const adminSuper = Cookies.get("super-admin");
 
   useEffect(() => {
     setLoading(true);
-    document.title = "Admins";
+    document.title = "Teams";
     getData();
   }, []);
 
-  function openAdminPopup() {
-    document.querySelector(".admin-popup").showModal();
+  function openTeamPopup() {
+    document.querySelector(".team-popup").showModal();
   }
-
   const rows =
     Data ||
     [].map((item) =>
-      createData(
-        item.id,
-        item.first_name,
-        item.last_name,
-        item.email,
-        item.is_super_admin,
-        item.created_at,
-        item.updated_at
-      )
+      createData(item.id, item.name, item.created_at, item.updated_at)
     );
 
   const handleSearch = debounce((searchValue) => {
@@ -74,7 +56,7 @@ function Admin(props) {
   const handleDelete = (rowsDeleted) => {
     const token = Cookies.get("token");
     axios
-      .delete(`http://127.0.0.1:8000/api/auth/admin/${rowsDeleted}`, {
+      .delete(`http://127.0.0.1:8000/api/team/${rowsDeleted}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -88,17 +70,37 @@ function Admin(props) {
       });
   };
 
-  const getData = () => {
+  const handleEmployeeList = (rowData) => {
     const token = Cookies.get("token");
     axios
-      .get("http://127.0.0.1:8000/api/admin", {
+      .get(`http://127.0.0.1:8000/api/employee`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
-        setData(response.data.message);
+        setdata(response.data.message);
+        console.log(data);
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getData = () => {
+    const token = Cookies.get("token");
+    axios
+      .get("http://127.0.0.1:8000/api/team", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        setData(response.data.message.data);
+        console.log(Data);
         setLoading(false);
       })
       .catch((error) => {
@@ -112,12 +114,9 @@ function Admin(props) {
     const token = Cookies.get("token");
     axios
       .patch(
-        `http://127.0.0.1:8000/api/auth/admin/${rowData[0]}`,
+        `http://127.0.0.1:8000/api/team/${rowData[0]}`,
         {
-          first_name: rowData[1],
-          last_name: rowData[2],
-          email: rowData[3],
-          is_super_admin: rowData[4],
+          name: rowData[1],
         },
         {
           headers: {
@@ -133,9 +132,11 @@ function Admin(props) {
         console.log(error);
       });
   };
+
   const showConfirmationBox = () => {
     document.querySelector(".confirmation-popup").showModal();
   };
+
   const columns = [
     {
       name: "id",
@@ -145,96 +146,18 @@ function Admin(props) {
       },
     },
     {
-      name: "first_name",
-      label: "First Name",
+      name: "name",
+      label: "name",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           const isEditing = rowIndex === editingRow;
 
           return (
-            <div style={{ textAlign: "center" }}>
-              {isEditing ? (
-                <input
-                  className="EditInput"
-                  value={value}
-                  onChange={(e) => {
-                    updateValue(e.target.value);
-                  }}
-                />
-              ) : (
-                value
-              )}
-            </div>
-          );
-        },
-        editable: true,
-      },
-    },
-    {
-      name: "last_name",
-      label: "Last Name",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          const isEditing = rowIndex === editingRow;
-
-          return (
-            <div style={{ textAlign: "center" }}>
-              {isEditing ? (
-                <input
-                  className="EditInput"
-                  value={value}
-                  onChange={(e) => {
-                    updateValue(e.target.value);
-                  }}
-                />
-              ) : (
-                value
-              )}
-            </div>
-          );
-        },
-        editable: true,
-      },
-    },
-    {
-      name: "email",
-      label: "Email",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          const isEditing = rowIndex === editingRow;
-
-          return (
-            <div style={{ textAlign: "center" }}>
-              {isEditing ? (
-                <input
-                  className="EditInput"
-                  value={value}
-                  onChange={(e) => {
-                    updateValue(e.target.value);
-                  }}
-                />
-              ) : (
-                value
-              )}
-            </div>
-          );
-        },
-        editable: true,
-      },
-    },
-    {
-      name: "is_super_admin",
-      label: "SUPER ADMIN",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          const isEditing = rowIndex === editingRow;
-
-          return (
-            <div style={{ textAlign: "center" }}>
+            <div
+              style={{ textAlign: "center" }}
+              onClick={() => setEditingRow(rowIndex)}
+            >
               {isEditing ? (
                 <input
                   className="EditInput"
@@ -261,17 +184,34 @@ function Admin(props) {
       label: "Updated At",
     },
     {
+      name: "showTeam",
+      label: "Show Team",
+      width: 160,
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowIndex = tableMeta.rowIndex;
+          const isEditing = rowIndex === editingRow;
+          return (
+            <IconButton
+              onClick={() => handleEmployeeList(tableMeta.rowData[0])}
+            >
+              <GroupsIcon />
+            </IconButton>
+          );
+        },
+      },
+    },
+    {
       name: "actions",
       label: "Actions",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowData = tableMeta.rowData;
-          const id = rowData[0];
+          // const id = rowData[0];
           return (
             <>
               {isEditing && editingRow === tableMeta.rowIndex ? (
                 <SaveAsRoundedIcon
-                  className="save-btn"
                   sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
@@ -283,6 +223,7 @@ function Admin(props) {
                       transition: "0.2s ease-out",
                     },
                   }}
+                  className="save-btn"
                   onClick={() => {
                     setIsEditing(false);
                     setEditingRow(null);
@@ -291,11 +232,6 @@ function Admin(props) {
                 />
               ) : (
                 <AppRegistrationSharpIcon
-                  className="edit-btn"
-                  onClick={() => {
-                    setIsEditing(true);
-                    setEditingRow(tableMeta.rowIndex);
-                  }}
                   sx={{
                     color: "#5cbdcb",
                     cursor: "pointer",
@@ -306,6 +242,11 @@ function Admin(props) {
                       transform: "scale(1.3)",
                       transition: "0.2s ease-out",
                     },
+                  }}
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditingRow(tableMeta.rowIndex);
                   }}
                 />
               )}
@@ -340,7 +281,7 @@ function Admin(props) {
     responsive: "simple",
     selectableRows: "none",
     search: true,
-    searchPlaceholder: "Search for Admin",
+    searchPlaceholder: "Search for Team",
     onSearchChange: (searchValue) => handleSearch(searchValue),
     download: true,
     print: true,
@@ -368,28 +309,24 @@ function Admin(props) {
           <Box sx={{ maxWidth: "75%", margin: "auto" }}>
             <MUIDataTable
               title={
-                parseInt(adminSuper) ? (
-                  <div>
-                    <LibraryAddRoundedIcon
-                      sx={{
-                        color: "#5cbdcb",
-                        cursor: "pointer",
-                        justifyItems: "center",
-                        alignItems: "center",
+                <div>
+                  <LibraryAddRoundedIcon
+                    sx={{
+                      color: "#5cbdcb",
+                      cursor: "pointer",
+                      justifyItems: "center",
+                      alignItems: "center",
 
-                        "&:hover": {
-                          // transform: "scale(1.3)",
-                          transition: "0.2s ease-out",
-                        },
-                      }}
-                      onClick={openAdminPopup}
-                    />
-
-                    <span className="kpititle">Admins</span>
-                  </div>
-                ) : (
-                  "Admins"
-                )
+                      "&:hover": {
+                        // transform: "scale(1.3)",
+                        transition: "0.2s ease-out",
+                      },
+                    }}
+                    className="addkpi"
+                    onClick={openTeamPopup}
+                  />{" "}
+                  <span className="kpititle">Teams</span>
+                </div>
               }
               data={rows}
               columns={columns}
@@ -402,12 +339,17 @@ function Admin(props) {
                 textAlign: "center",
               }}
             />
-            <ConfirmationPopup handleDelete={handleDelete} id={deleteId} />
-            <AdminPopup getData={getData} />
+
+            <ConfirmationTeamPopup handleDelete={handleDelete} id={deleteId} />
+            <EditTeamConfirmationPopup
+              handleUpdate={handleUpdate}
+              id={editingRow}
+            />
+            <TeamPopup getData={getData} />
           </Box>
         </div>
       )}
     </>
   );
 }
-export default Admin;
+export default Team;

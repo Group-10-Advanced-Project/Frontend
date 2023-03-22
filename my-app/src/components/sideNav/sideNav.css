@@ -1,6 +1,7 @@
 nav {
     max-width: 240px;
-    width: 240px;
+    width: 180px;
+    min-width: 180px;
     height: 100vh;
     background-color: #5cbdcb;
     display: flex;
@@ -24,9 +25,9 @@ nav a {
     justify-content: center;
 }
 
-nav a:hover {
+/* nav a:hover {
     text-decoration: underline;
-}
+} */
 
 .setting {
     width: 80%;
@@ -115,9 +116,10 @@ nav .active u::before {
     border-top-right-radius: 20px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1080px) {
     nav {
-        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         overflow-x: hidden;
     }
 

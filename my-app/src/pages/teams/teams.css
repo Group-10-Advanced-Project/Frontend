@@ -1,3 +1,5 @@
+
+
 .MuiPaper-root>.MuiToolbar-root {
     background: #40b2c2;
     color: #fff;
@@ -11,4 +13,13 @@
 .MuiPaper-root>.MuiToolbar-root .MuiButtonBase-root,
 .MuiPaper-root>.MuiToolbar-root .MuiSvgIcon-root {
     color: #fff;
+}
+
+.addkpi{
+   margin-top: 10px;
+}
+.kpititle{
+    font-weight: bold;
+    font-size: 20px;
+    margin-left:2px ;
 }
